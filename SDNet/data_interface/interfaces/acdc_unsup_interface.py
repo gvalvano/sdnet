@@ -71,20 +71,6 @@ class DatasetInterface(object):
 
         return np.array(x_batch_augmented)
 
-    # @staticmethod
-    # def _py_resize_2d_slices(batch, new_size):
-    #     """
-    #     Resize the batch frames on the first two axis.
-    #     :param batch: (np.array) input batch of images, with shape [n_samples, width, height]
-    #     :param new_size: (int, int) output size, with shape (N, M)
-    #     :return: resized batch
-    #     """
-    #     n_samples, x, y = batch.shape
-    #     output = []
-    #     for k in range(n_samples):
-    #         output.append(cv2.resize(batch[k, ...], (new_size[1], new_size[0])))
-    #     return np.array(output)
-
     @staticmethod
     def _data_augmentation_ops(x_train):
         """ Data augmentation pipeline (to be applied on training samples)
@@ -103,25 +89,17 @@ class DatasetInterface(object):
         :param augment: (bool) if True, perform data augmentation operations
         :return: (array) = numpy array with the frames on the first dimension, s.t.: [None, width, height]
         """
-        # batch = slice_pre_processing_pipeline(filename.decode('utf-8'))
-        # batch = np.expand_dims(batch, -1)
 
         batch = np.load(filename.decode('utf-8')).astype(np.float32)
 
         if standardize:
             print("Data won't be standardized, as they already have been pre-processed.")
 
-        # # Undersample data:
-        # new_size = [self.input_size[0] // 4, self.input_size[1] // 4]
-        # batch = self._py_resize_2d_slices(np.squeeze(batch, axis=-1), new_size)
-        # batch = np.expand_dims(batch, axis=-1)
-
         if augment:
             batch = self._py_data_augmentation_ops(batch).astype(np.float32)
 
         assert not np.any(np.isnan(batch))
 
-        # batch = self._undersample(batch)
         return batch
 
     def get_data(self, b_size, augment=False, standardize=False, num_threads=4):
@@ -173,7 +151,6 @@ class DatasetInterface(object):
                     train_data = train_data.prefetch(buffer_size=2)  # buffer_size depends on the machine
                 else:
                     train_data = train_data.apply(tf.contrib.data.prefetch_to_device("/gpu:0"))
-                    # train_data = train_data.apply(prefetching_ops.copy_to_device("/gpu:0")).prefetch(100 * b_size)  # 2)
 
             iterator = tf.data.Iterator.from_structure(train_data.output_types, train_data.output_shapes)
 

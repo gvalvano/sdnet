@@ -62,22 +62,3 @@ class DatasetInterfaceWrapper(object):
             num_threads=self.num_threads)
 
         return train_init, valid_init, input_data, output_data
-
-    def get_acdc_tframe_data(self, data_path):
-        """
-        wrapper to ACDC data set.
-        :param data_path: (str) path to data directory
-        :return: iterator initializer for train and valid data; input and output frame; time and delta time.
-        """
-        print('Define input pipeline for time-frame pairs...')
-
-        # initialize data set interfaces
-        acdc_itf = ACDCTemporalInterface(data_path, self.input_size, split_sequences=True)
-
-        train_init, valid_init, input_frames, output_frames, input_times, delta_times = acdc_itf.get_data(
-            b_size=self.batch_size,
-            augment=self.augment,
-            standardize=self.standardize,
-            num_threads=self.num_threads)
-
-        return train_init, valid_init, input_frames, output_frames, input_times, delta_times

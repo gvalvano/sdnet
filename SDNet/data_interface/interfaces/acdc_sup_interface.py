@@ -56,19 +56,6 @@ class DatasetInterface(object):
 
         return x_train, y_train
 
-    # @staticmethod
-    # def _py_resize_2d_slices(x, y, new_size):
-    #     """
-    #     Resize the batch frames on the first two axis.
-    #     :param x: (array) input batch of images, with shape [width, height]
-    #     :param y: (array) input batch of masks, with shape [width, height]
-    #     :param new_size: (int, int) output size, with shape (N, M)
-    #     :return: resized batch
-    #     """
-    #     output_x = cv2.resize(x, (new_size[1], new_size[0]))
-    #     output_y = cv2.resize(y, (new_size[1], new_size[0]), interpolation=cv2.INTER_NEAREST)
-    #     return output_x, output_y
-
     def get_data(self, b_size, augment=False, standardize=False, num_threads=4):
         """ Returns iterators on the dataset along with their initializers.
         :param b_size: batch size
@@ -93,21 +80,6 @@ class DatasetInterface(object):
             if augment:
                 train_data = train_data.map(self._data_augmentation_ops, num_parallel_calls=num_threads)
 
-            # # Undersample data
-            # new_size = [self.input_size[0] // 4, self.input_size[1] // 4]
-            #
-            # train_data = train_data.map(
-            #     lambda x, y: tf.py_func(  # undersample
-            #         self._py_resize_2d_slices, [x, y, (new_size[1], new_size[0])], [tf.float32, tf.float32]),
-            #     num_parallel_calls=num_threads)
-            #
-            # valid_data = valid_data.map(
-            #     lambda x, y: tf.py_func(  # undersample
-            #         self._py_resize_2d_slices, [x, y, (new_size[1], new_size[0])], [tf.float32, tf.float32]),
-            #     num_parallel_calls=num_threads)
-
-            # ------------------------------------------
-
             train_data = train_data.shuffle(buffer_size=len(self.x_train))
             valid_data = valid_data.shuffle(buffer_size=len(self.x_validation))
 
@@ -122,7 +94,6 @@ class DatasetInterface(object):
                     train_data = train_data.prefetch(buffer_size=2)  # buffer_size depends on the machine
                 else:
                     train_data = train_data.apply(tf.contrib.data.prefetch_to_device("/gpu:0"))
-                    # train_data = train_data.apply(prefetching_ops.copy_to_device("/gpu:0")).prefetch(100 * b_size)  # 2)
 
             iterator = tf.data.Iterator.from_structure(train_data.output_types, train_data.output_shapes)
 
@@ -137,8 +108,5 @@ class DatasetInterface(object):
             with tf.name_scope('output_sup'):
                 output_data = tf.reshape(_output_data, shape=[-1, self.input_size[0], self.input_size[1], 4])
                 output_data = tf.cast(output_data, tf.float32)
-
-            # TODO: forse conviene fare data augmentation su y_train e y_validation quando sono ancora ad un canale e
-            #  fare soltanto dopo il one-hot encoding
 
             return train_init, valid_init, input_data, output_data
