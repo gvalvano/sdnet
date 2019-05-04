@@ -1,0 +1,1170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9633def9-91c5-469a-aa60-e762d32e2744" name="Default Changelist" comment="updating output from 2D probability map to scalar" />
+    <ignored path="$PROJECT_DIR$/venv/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prepare_dataset.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="466">
+              <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
+              <folding>
+                <element signature="e#1349#1367#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42">
+              <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="9">
+              <caret line="424" column="27" lean-forward="true" selection-start-line="424" selection-start-column="27" selection-end-line="424" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>disc</find>
+      <find>caller</find>
+      <find>if curr_epoch &lt;</find>
+      <find>train_op</find>
+      <find>weighted_cross_entropy</find>
+      <find>adv</find>
+      <find>jacca</find>
+      <find>_train_disc_step</find>
+      <find>train_op_disc</find>
+      <find>adv_disc_loss</find>
+      <find>self.pred_mask</find>
+      <find>self.</find>
+      <find>tframe_rec</find>
+      <find>pred_har</find>
+      <find>TFrameRec_loss</find>
+      <find>pred_mask</find>
+      <find>20</find>
+      <find>tframe</find>
+      <find>tframe_</find>
+      <find>tframe_loss</find>
+      <find>saver.rest</find>
+      <find>save</find>
+      <find>params_loss</find>
+      <find>_param</find>
+      <find>s</find>
+      <find>softmax</find>
+      <find>softma</find>
+      <find>pred_</find>
+      <find>pred_tframe_rec_t2</find>
+      <find>dice</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>layers</replace>
+      <replace>he_init</replace>
+      <replace>self.FLAGS</replace>
+      <replace>FLAGS</replace>
+      <replace>tf.</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/seed.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+        <option value="$PROJECT_DIR$/data_interface/interfaces/ACDC_interface.py" />
+        <option value="$PROJECT_DIR$/architectures/utils/rounding_layer.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/custom_grads.py" />
+        <option value="$PROJECT_DIR$/architectures/layers/film_layer.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/sdnet.py" />
+        <option value="$PROJECT_DIR$/architectures/unet.py" />
+        <option value="$PROJECT_DIR$/architectures/mlp_in.py" />
+        <option value="$PROJECT_DIR$/data_interface/interfaces/pre_process_pipeline.py" />
+        <option value="$PROJECT_DIR$/idas/utils.py" />
+        <option value="$PROJECT_DIR$/train_unet.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+        <option value="$PROJECT_DIR$/model_unet.py" />
+        <option value="$PROJECT_DIR$/architectures/layers/spectralnorm.py" />
+        <option value="$PROJECT_DIR$/architectures/layers/spectral_norm.py" />
+        <option value="$PROJECT_DIR$/architectures/layers/rounding_layer.py" />
+        <option value="$PROJECT_DIR$/pixel_wise_model/model.py" />
+        <option value="$PROJECT_DIR$/data_interface/dataset_wrapper.py" />
+        <option value="$PROJECT_DIR$/architectures/decoder.py" />
+        <option value="$PROJECT_DIR$/architectures/modality_encoder.py" />
+        <option value="$PROJECT_DIR$/architectures/small_unet.py" />
+        <option value="$PROJECT_DIR$/tmp.py" />
+        <option value="$PROJECT_DIR$/aaa.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/input_pipeline.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/input_unsup_pipeline.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/input_tframe_pipeline.py" />
+        <option value="$PROJECT_DIR$/idas/data_augmentation/data_augm_2d_pyops.py" />
+        <option value="$PROJECT_DIR$/idas/data_augmentation/data_augm_3d_pyops.py" />
+        <option value="$PROJECT_DIR$/idas/metrics/tf_metrics.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/loss_weights.py" />
+        <option value="$PROJECT_DIR$/architectures/mlp_tr_out.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/early_stopping.py" />
+        <option value="$PROJECT_DIR$/idas/callbacks/early_stopping_callback.py" />
+        <option value="$PROJECT_DIR$/architectures/mlp_convtr_out.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/idas/losses/tf_losses.py" />
+        <option value="$PROJECT_DIR$/prepare_dataset.py" />
+        <option value="$PROJECT_DIR$/architectures/_sdnet.py" />
+        <option value="$PROJECT_DIR$/architectures/sdnet.py" />
+        <option value="$PROJECT_DIR$/architectures/pixel_wise_frame_predictor.py" />
+        <option value="$PROJECT_DIR$/train.py" />
+        <option value="$PROJECT_DIR$/architectures/frame_predictor.py" />
+        <option value="$PROJECT_DIR$/model.py" />
+        <option value="$PROJECT_DIR$/data_interface/interfaces/acdc_temporal_frames_interface.py" />
+        <option value="$PROJECT_DIR$/data_interface/interfaces/acdc_unsup_interface.py" />
+        <option value="$PROJECT_DIR$/data_interface/interfaces/acdc_sup_interface.py" />
+        <option value="$PROJECT_DIR$/_model.py" />
+        <option value="$PROJECT_DIR$/architectures/segmentor.py" />
+        <option value="$PROJECT_DIR$/architectures/mask_discriminator.py" />
+        <option value="$PROJECT_DIR$/config_file.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="736" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SDNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SDNet" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SDNet" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SDNet" type="462c0819:PsiDirectoryNode" />
+              <item name="architectures" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/../unsup_data_selection/nfbs_exp/unsupervised/vae_unsup.py" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/architectures" />
+      <recent name="$PROJECT_DIR$/idas/callbacks" />
+      <recent name="$PROJECT_DIR$/data_interface/interfaces" />
+      <recent name="$PROJECT_DIR$/pixel_wise_model" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/architectures/layers" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/architectures/utils" />
+      <recent name="$PROJECT_DIR$/data_interface/interfaces" />
+      <recent name="$PROJECT_DIR$/data_interface" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.scratch">
+    <configuration name="early_stopping" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SDNet+time" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/early_stopping.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="prepare_dataset" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SDNet+time" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/prepare_dataset.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SDNet+time" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SDNet+time" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/input_tframe_pipeline.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="SDNet+time" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.early_stopping" />
+        <item itemvalue="Python.prepare_dataset" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9633def9-91c5-469a-aa60-e762d32e2744" name="Default Changelist" comment="" />
+      <created>1554385579216</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1554385579216</updated>
+    </task>
+    <task id="LOCAL-00248" summary="major changes: rewrite dict_structure">
+      <created>1556485920801</created>
+      <option name="number" value="00248" />
+      <option name="presentableId" value="LOCAL-00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1556485920801</updated>
+    </task>
+    <task id="LOCAL-00249" summary="major change: rewrite data augmentation pipeline in python using open cv">
+      <created>1556486068494</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1556486068494</updated>
+    </task>
+    <task id="LOCAL-00250" summary="comment resize 2d">
+      <created>1556486088589</created>
+      <option name="number" value="00250" />
+      <option name="presentableId" value="LOCAL-00250" />
+      <option name="project" value="LOCAL" />
+      <updated>1556486088590</updated>
+    </task>
+    <task id="LOCAL-00251" summary="major change: rewrite data parsing pipeline">
+      <created>1556486153001</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1556486153001</updated>
+    </task>
+    <task id="LOCAL-00252" summary="major change: rewrite get_data() pipeline">
+      <created>1556486213614</created>
+      <option name="number" value="00252" />
+      <option name="presentableId" value="LOCAL-00252" />
+      <option name="project" value="LOCAL" />
+      <updated>1556486213614</updated>
+    </task>
+    <task id="LOCAL-00253" summary="add one_hot flag to make sure the user knows that the output is neither one hot, nor in the range [0, 1]">
+      <created>1556619261083</created>
+      <option name="number" value="00253" />
+      <option name="presentableId" value="LOCAL-00253" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619261085</updated>
+    </task>
+    <task id="LOCAL-00254" summary="minor changes">
+      <created>1556619289147</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619289147</updated>
+    </task>
+    <task id="LOCAL-00255" summary="add early stopping callback">
+      <created>1556619319904</created>
+      <option name="number" value="00255" />
+      <option name="presentableId" value="LOCAL-00255" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619319904</updated>
+    </task>
+    <task id="LOCAL-00256" summary="add early stopping callback">
+      <created>1556619370706</created>
+      <option name="number" value="00256" />
+      <option name="presentableId" value="LOCAL-00256" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619370706</updated>
+    </task>
+    <task id="LOCAL-00257" summary="minor changes">
+      <created>1556619469924</created>
+      <option name="number" value="00257" />
+      <option name="presentableId" value="LOCAL-00257" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619469924</updated>
+    </task>
+    <task id="LOCAL-00258" summary="multi-class weighted crossentropy">
+      <created>1556619663577</created>
+      <option name="number" value="00258" />
+      <option name="presentableId" value="LOCAL-00258" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619663577</updated>
+    </task>
+    <task id="LOCAL-00259" summary="moving weighted cross-entropy in idas.losses.tf_losses">
+      <created>1556619728932</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619728932</updated>
+    </task>
+    <task id="LOCAL-00260" summary="minor fixes">
+      <created>1556619855141</created>
+      <option name="number" value="00260" />
+      <option name="presentableId" value="LOCAL-00260" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619855141</updated>
+    </task>
+    <task id="LOCAL-00261" summary="add final interpolation to desired shape">
+      <created>1556619902397</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619902397</updated>
+    </task>
+    <task id="LOCAL-00262" summary="add builf_tframe_sets()">
+      <created>1556619937573</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619937573</updated>
+    </task>
+    <task id="LOCAL-00263" summary="minor fixes">
+      <created>1556619974552</created>
+      <option name="number" value="00263" />
+      <option name="presentableId" value="LOCAL-00263" />
+      <option name="project" value="LOCAL" />
+      <updated>1556619974552</updated>
+    </task>
+    <task id="LOCAL-00264" summary="minor fixes">
+      <created>1556622141197</created>
+      <option name="number" value="00264" />
+      <option name="presentableId" value="LOCAL-00264" />
+      <option name="project" value="LOCAL" />
+      <updated>1556622141197</updated>
+    </task>
+    <task id="LOCAL-00265" summary="separating dice/jaccard and adding iou">
+      <created>1556623516102</created>
+      <option name="number" value="00265" />
+      <option name="presentableId" value="LOCAL-00265" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623516102</updated>
+    </task>
+    <task id="LOCAL-00266" summary=".idea update">
+      <created>1556623549012</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623549012</updated>
+    </task>
+    <task id="LOCAL-00267" summary="minor change">
+      <created>1556623617773</created>
+      <option name="number" value="00267" />
+      <option name="presentableId" value="LOCAL-00267" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623617773</updated>
+    </task>
+    <task id="LOCAL-00268" summary="update train op wrapper with clip_grads and clip_value input variables">
+      <created>1556623752599</created>
+      <option name="number" value="00268" />
+      <option name="presentableId" value="LOCAL-00268" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623752599</updated>
+    </task>
+    <task id="LOCAL-00269" summary="add eval metric">
+      <created>1556623865663</created>
+      <option name="number" value="00269" />
+      <option name="presentableId" value="LOCAL-00269" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623865663</updated>
+    </task>
+    <task id="LOCAL-00270" summary="fix: renaming internal functions">
+      <created>1556623914173</created>
+      <option name="number" value="00270" />
+      <option name="presentableId" value="LOCAL-00270" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623914173</updated>
+    </task>
+    <task id="LOCAL-00271" summary="bug fix for early stopping callback">
+      <created>1556623981857</created>
+      <option name="number" value="00271" />
+      <option name="presentableId" value="LOCAL-00271" />
+      <option name="project" value="LOCAL" />
+      <updated>1556623981857</updated>
+    </task>
+    <task id="LOCAL-00272" summary="minor change">
+      <created>1556626100733</created>
+      <option name="number" value="00272" />
+      <option name="presentableId" value="LOCAL-00272" />
+      <option name="project" value="LOCAL" />
+      <updated>1556626100733</updated>
+    </task>
+    <task id="LOCAL-00273" summary="setting smaller smooth values">
+      <created>1556626173004</created>
+      <option name="number" value="00273" />
+      <option name="presentableId" value="LOCAL-00273" />
+      <option name="project" value="LOCAL" />
+      <updated>1556626173004</updated>
+    </task>
+    <task id="LOCAL-00274" summary="removing old train/validation pipelines">
+      <created>1556626291614</created>
+      <option name="number" value="00274" />
+      <option name="presentableId" value="LOCAL-00274" />
+      <option name="project" value="LOCAL" />
+      <updated>1556626291614</updated>
+    </task>
+    <task id="LOCAL-00275" summary="documentation minor change">
+      <created>1556628957930</created>
+      <option name="number" value="00275" />
+      <option name="presentableId" value="LOCAL-00275" />
+      <option name="project" value="LOCAL" />
+      <updated>1556628957930</updated>
+    </task>
+    <task id="LOCAL-00276" summary="fix stability issue">
+      <created>1556717028330</created>
+      <option name="number" value="00276" />
+      <option name="presentableId" value="LOCAL-00276" />
+      <option name="project" value="LOCAL" />
+      <updated>1556717028331</updated>
+    </task>
+    <task id="LOCAL-00277" summary="updating output from 2D probability map to scalar value">
+      <created>1556803976258</created>
+      <option name="number" value="00277" />
+      <option name="presentableId" value="LOCAL-00277" />
+      <option name="project" value="LOCAL" />
+      <updated>1556803976259</updated>
+    </task>
+    <task id="LOCAL-00278" summary="doc update">
+      <created>1556805704001</created>
+      <option name="number" value="00278" />
+      <option name="presentableId" value="LOCAL-00278" />
+      <option name="project" value="LOCAL" />
+      <updated>1556805704001</updated>
+    </task>
+    <task id="LOCAL-00279" summary="minor update">
+      <created>1556808781279</created>
+      <option name="number" value="00279" />
+      <option name="presentableId" value="LOCAL-00279" />
+      <option name="project" value="LOCAL" />
+      <updated>1556808781279</updated>
+    </task>
+    <task id="LOCAL-00280" summary="adding convolutional transformer">
+      <created>1556808816572</created>
+      <option name="number" value="00280" />
+      <option name="presentableId" value="LOCAL-00280" />
+      <option name="project" value="LOCAL" />
+      <updated>1556808816572</updated>
+    </task>
+    <task id="LOCAL-00281" summary="minor fix">
+      <created>1556808841919</created>
+      <option name="number" value="00281" />
+      <option name="presentableId" value="LOCAL-00281" />
+      <option name="project" value="LOCAL" />
+      <updated>1556808841919</updated>
+    </task>
+    <task id="LOCAL-00282" summary="adding convolutional transformer mode">
+      <created>1556808882711</created>
+      <option name="number" value="00282" />
+      <option name="presentableId" value="LOCAL-00282" />
+      <option name="project" value="LOCAL" />
+      <updated>1556808882711</updated>
+    </task>
+    <task id="LOCAL-00283" summary="bug fix">
+      <created>1556811954432</created>
+      <option name="number" value="00283" />
+      <option name="presentableId" value="LOCAL-00283" />
+      <option name="project" value="LOCAL" />
+      <updated>1556811954432</updated>
+    </task>
+    <task id="LOCAL-00284" summary="bug fix">
+      <created>1556812200927</created>
+      <option name="number" value="00284" />
+      <option name="presentableId" value="LOCAL-00284" />
+      <option name="project" value="LOCAL" />
+      <updated>1556812200927</updated>
+    </task>
+    <task id="LOCAL-00285" summary="backup sdnet">
+      <created>1556960227482</created>
+      <option name="number" value="00285" />
+      <option name="presentableId" value="LOCAL-00285" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960227482</updated>
+    </task>
+    <task id="LOCAL-00286" summary="separating pixel-wise frame predictor">
+      <created>1556960265191</created>
+      <option name="number" value="00286" />
+      <option name="presentableId" value="LOCAL-00286" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960265191</updated>
+    </task>
+    <task id="LOCAL-00287" summary="Unet-like frame predictor">
+      <created>1556960292001</created>
+      <option name="number" value="00287" />
+      <option name="presentableId" value="LOCAL-00287" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960292002</updated>
+    </task>
+    <task id="LOCAL-00288" summary="splitting sdnet.build() in separated methods">
+      <created>1556960339144</created>
+      <option name="number" value="00288" />
+      <option name="presentableId" value="LOCAL-00288" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960339145</updated>
+    </task>
+    <task id="LOCAL-00289" summary="fix for 8-channel working pixel-wise frame predictor">
+      <created>1556960392602</created>
+      <option name="number" value="00289" />
+      <option name="presentableId" value="LOCAL-00289" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960392602</updated>
+    </task>
+    <task id="LOCAL-00290" summary="3-layered MLP + convolutional transformer">
+      <created>1556960438030</created>
+      <option name="number" value="00290" />
+      <option name="presentableId" value="LOCAL-00290" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960438030</updated>
+    </task>
+    <task id="LOCAL-00291" summary="add dataset.repeat() for indefinite repeat of the input">
+      <created>1556960543347</created>
+      <option name="number" value="00291" />
+      <option name="presentableId" value="LOCAL-00291" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960543347</updated>
+    </task>
+    <task id="LOCAL-00292" summary="add minor comment">
+      <created>1556960593893</created>
+      <option name="number" value="00292" />
+      <option name="presentableId" value="LOCAL-00292" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960593894</updated>
+    </task>
+    <task id="LOCAL-00293" summary=".idea update">
+      <created>1556960613616</created>
+      <option name="number" value="00293" />
+      <option name="presentableId" value="LOCAL-00293" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960613616</updated>
+    </task>
+    <task id="LOCAL-00294" summary="remove old file">
+      <created>1556960673997</created>
+      <option name="number" value="00294" />
+      <option name="presentableId" value="LOCAL-00294" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960673997</updated>
+    </task>
+    <task id="LOCAL-00295" summary="renaming loss function for better understandind">
+      <created>1556960711144</created>
+      <option name="number" value="00295" />
+      <option name="presentableId" value="LOCAL-00295" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960711144</updated>
+    </task>
+    <task id="LOCAL-00296" summary=".idea update">
+      <created>1556960726081</created>
+      <option name="number" value="00296" />
+      <option name="presentableId" value="LOCAL-00296" />
+      <option name="project" value="LOCAL" />
+      <updated>1556960726081</updated>
+    </task>
+    <option name="localTasksCounter" value="297" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1280" height="736" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1477363" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32608697" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.28082192" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.23212321" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32763976" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32763976" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50039715" side_tool="true" weight="0.2780822" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49960285" weight="0.33113313" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1477363" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32739726" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.28082192" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.23287672" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32914045" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32914045" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50039715" side_tool="true" weight="0.2780822" />
+      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49960285" weight="0.27477476" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: renaming internal functions" />
+    <MESSAGE value="bug fix for early stopping callback" />
+    <MESSAGE value="minor change" />
+    <MESSAGE value="setting smaller smooth values" />
+    <MESSAGE value="removing old train/validation pipelines" />
+    <MESSAGE value="documentation minor change" />
+    <MESSAGE value="fix stability issue" />
+    <MESSAGE value="updating output from 2D probability map to scalar value" />
+    <MESSAGE value="doc update" />
+    <MESSAGE value="minor update" />
+    <MESSAGE value="adding convolutional transformer" />
+    <MESSAGE value="minor fix" />
+    <MESSAGE value="adding convolutional transformer mode" />
+    <MESSAGE value="bug fix" />
+    <MESSAGE value="backup sdnet" />
+    <MESSAGE value="separating pixel-wise frame predictor" />
+    <MESSAGE value="Unet-like frame predictor" />
+    <MESSAGE value="splitting sdnet.build() in separated methods" />
+    <MESSAGE value="fix for 8-channel working pixel-wise frame predictor" />
+    <MESSAGE value="3-layered MLP + convolutional transformer" />
+    <MESSAGE value="add dataset.repeat() for indefinite repeat of the input" />
+    <MESSAGE value="add minor comment" />
+    <MESSAGE value="remove old file" />
+    <MESSAGE value="renaming loss function for better understandind" />
+    <MESSAGE value=".idea update" />
+    <option name="LAST_COMMIT_MESSAGE" value=".idea update" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/data/experimental/ops/batching.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="351" column="6" selection-start-line="351" selection-start-column="6" selection-end-line="351" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/input_unsup_pipeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="831">
+          <caret line="120" column="59" selection-start-line="120" selection-start-column="59" selection-end-line="120" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/input_tframe_pipeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2385">
+          <caret line="167" column="14" selection-start-line="167" selection-start-column="14" selection-end-line="167" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+    <entry file="file://$PROJECT_DIR$/idas/callbacks/callbacks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-484">
+          <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/data_augmentation/data_augm_3d_pyops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="35" column="32" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/data_augmentation/data_augm_2d_pyops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="141" column="30" selection-start-line="141" selection-start-column="30" selection-end-line="141" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/metrics/py_metrics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="7" lean-forward="true" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/examples/data_set_interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/callbacks/dsd_callback.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+          <folding>
+            <element signature="e#53#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/ops/gen_array_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="8783" column="4" selection-start-line="8783" selection-start-column="4" selection-end-line="8783" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/loss_weights.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="3373" column="4" selection-start-line="3373" selection-start-column="4" selection-end-line="3373" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/layers/rounding_layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="734">
+          <caret line="53" column="57" lean-forward="true" selection-start-line="53" selection-start-column="57" selection-end-line="53" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_interface/dataset_wrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="37" column="65" selection-start-line="37" selection-start-column="65" selection-end-line="37" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3802">
+          <caret line="290" column="11" selection-start-line="290" selection-start-column="11" selection-end-line="290" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/layers/spatial_transformer_layer.py" />
+    <entry file="file://$PROJECT_DIR$/pixel_wise_model/model.py" />
+    <entry file="file://$PROJECT_DIR$/idas/callbacks/early_stopping_callback.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/data/ops/iterator_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="310" column="7" lean-forward="true" selection-start-line="310" selection-start-column="7" selection-end-line="313" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/mlp_tr_out.py" />
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/data/ops/dataset_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="2263" column="36" lean-forward="true" selection-start-line="2263" selection-start-column="36" selection-end-line="2263" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/ops/gen_dataset_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8">
+          <caret line="5543" column="96" lean-forward="true" selection-start-line="5543" selection-start-column="96" selection-end-line="5543" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/framework/random_seed.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="566">
+          <caret line="85" column="22" lean-forward="true" selection-start-line="85" selection-start-column="22" selection-end-line="85" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_interface/interfaces/pre_process_pipeline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-69">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/early_stopping.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="35" selection-end-line="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/metrics/tf_metrics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="23" lean-forward="true" selection-start-line="39" selection-start-column="23" selection-end-line="39" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idas/losses/tf_losses.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/mlp_convtr_out.py" />
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/ops/control_flow_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="1966" column="4" selection-start-line="1966" selection-start-column="4" selection-end-line="1966" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Caches/PyCharmCE2018.3/python_stubs/-833154754/cv2/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="6606" column="4" selection-start-line="6606" selection-start-column="4" selection-end-line="6606" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/venvs/deep/lib/python3.6/site-packages/tensorflow/python/framework/errors_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="394" column="21" lean-forward="true" selection-start-line="394" selection-start-column="21" selection-end-line="394" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/pixel_wise_frame_predictor.py" />
+    <entry file="file://$PROJECT_DIR$/architectures/small_unet.py" />
+    <entry file="file://$PROJECT_DIR$/data_interface/interfaces/acdc_sup_interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="114" column="77" lean-forward="true" selection-start-line="114" selection-start-column="77" selection-end-line="114" selection-end-column="77" />
+          <folding>
+            <element signature="e#376#399#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_interface/interfaces/acdc_unsup_interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="160" column="83" selection-start-line="160" selection-start-column="83" selection-end-line="160" selection-end-column="83" />
+          <folding>
+            <element signature="e#376#399#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_interface/interfaces/acdc_temporal_frames_interface.py" />
+    <entry file="file://$PROJECT_DIR$/data_interface/metrics_acdc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="49" column="15" selection-start-line="49" selection-start-column="11" selection-end-line="49" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/frame_predictor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1065">
+          <caret line="71" column="50" selection-start-line="71" selection-start-column="50" selection-end-line="71" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/sdnet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1251">
+          <caret line="94" column="28" selection-start-line="94" selection-start-column="28" selection-end-line="94" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/mask_discriminator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="80" column="38" lean-forward="true" selection-start-line="80" selection-start-column="38" selection-end-line="80" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/modality_encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="894">
+          <caret line="64" column="72" selection-start-line="64" selection-start-column="72" selection-end-line="64" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/unet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2490">
+          <caret line="166" column="8" selection-start-line="166" selection-start-column="8" selection-end-line="166" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/segmentor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-65">
+          <caret line="12" column="62" selection-start-line="12" selection-start-column="62" selection-end-line="12" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/architectures/decoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3">
+          <caret line="58" column="29" lean-forward="true" selection-start-line="58" selection-start-column="29" selection-end-line="58" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config_file.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-156" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prepare_dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
+          <folding>
+            <element signature="e#1349#1367#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9">
+          <caret line="424" column="27" lean-forward="true" selection-start-line="424" selection-start-column="27" selection-end-line="424" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
