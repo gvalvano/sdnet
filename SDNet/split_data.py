@@ -6,12 +6,12 @@ import os
 from glob import glob
 import random
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - -
 root = './data/acdc_data/training/*'
 n_train = 60
 n_valid = 20
 n_test = 20
-# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#  - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 subdir_list = [d for d in glob(root)]
 random.shuffle(subdir_list)
