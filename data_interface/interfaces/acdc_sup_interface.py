@@ -86,7 +86,7 @@ class DatasetInterface(object):
             print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
             train_data = train_data.repeat()  # Repeat the input indefinitely
 
-            train_data = train_data.batch(b_size, drop_remainder=True)  # TODO be aware of this
+            train_data = train_data.batch(b_size, drop_remainder=True)
             valid_data = valid_data.batch(b_size, drop_remainder=True)
 
             if len(get_available_gpus()) > 0:

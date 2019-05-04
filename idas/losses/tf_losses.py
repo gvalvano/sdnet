@@ -113,7 +113,7 @@ def vae_loss(z_mean, z_logstd, y_true, y_pred, n_outputs):
 def gradient_loss(y_true, y_pred):
     """
     Computes gradient loss as the mean square error on the sobel filtered image
-    # TODO: update implementation to make it work for any input dimension
+    It works on 4D tensors
     """
     pred_grad = tf.reduce_sum(tf.image.sobel_edges(y_pred[:, :, :, 0]), -1)
     input_grad = tf.reduce_sum(tf.image.sobel_edges(y_true[:, :, :, 0]), -1)
