@@ -14,7 +14,40 @@ class SDNet(object):
 
     def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, anatomy=None, name='Model'):
         """
-        Build Model model.  # TODO add documentation
+        SDNet architecture:
+          "Factorised Representation Learning in Cardiac Image Analysis" (2019), arXiv preprint arXiv:1903.09467
+          Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A.
+
+        :param n_anatomical_masks: (int) number of anatomical masks (s factors)
+        :param nz_latent: (int) number of latent dimensions outputted by modality encoder
+        :param n_classes: (int) number of classes (4: background, LV, RV, MC)
+        :param is_training: (tf.placeholder, or bool) training state, for batch normalization
+        :param anatomy: (tensor) if given, the reconstruction is computed starting from z modality extracted by the
+                        input data and the hard anatomy in this argument. Default: compute and use hard anatomy of the
+                        input data.
+        :param name: variable scope name
+
+        - - - - - - - - - - - - - - - -
+
+        Example of usage:
+
+            # build the sdnet:
+            sdnet = SDNet(n_anatomical_masks, nz_latent, n_classes, is_training, name='Model')
+            sdnet = sdnet.build(input_data)
+
+            # get soft and hard anatomy:
+            soft_a = sdnet.get_soft_anatomy()
+            hard_a = sdnet.get_hard_anatomy()
+
+            # get z distribution (output of modality encoder)
+            z_mean, z_logvar, sampled_z = sdnet.get_z_distribution()
+
+            # get decoder reconstruction:
+            rec = sdnet.get_input_reconstruction()
+
+            # get z estimate given the reconstruction
+            z_regress = sdnet.get_z_sample_estimate()
+
         """
         self.is_training = is_training
         self.name = name
