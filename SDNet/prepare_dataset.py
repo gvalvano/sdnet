@@ -23,8 +23,8 @@ from sklearn.utils import shuffle
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # data set dirs:
 
-source_dir = './data/acdc_data/'  # + '_tmp/'
-dest_dir = './data/acdc_data/preprocessed/'  # + '_tmp/'
+source_dir = './data/acdc_data/'
+dest_dir = './data/acdc_data/preprocessed/'
 
 for subdir in ['train', 'validation', 'test']:
     safe_mkdir(os.path.join(dest_dir, subdir))
@@ -496,23 +496,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    # import matplotlib as mlp
-    # mlp.use('TkAgg')
-    # import matplotlib.pyplot as plt
-    #
-    # dset = 'train'
-    # x = np.load(dest_dir + '{0}/sup_{0}.npy'.format(dset))
-    # y = np.load(dest_dir + '{0}/sup_mask_{0}.npy'.format(dset))
-    # print(x.shape)
-    # print(y.shape)
-    #
-    # plt.close('all')
-    # fig, a = plt.subplots(3, 3)
-    #
-    # delta = 0
-    #
-    # for j in range(3):
-    #     for k in range(3):
-    #         a[j, k].imshow(x[j*(3 + delta) + k, :, :, 0], cmap='gray')
-    #         a[j, k].imshow(y[j*(3 + delta) + k, :, :, 3], alpha=0.5)
