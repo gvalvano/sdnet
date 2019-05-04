@@ -13,6 +13,7 @@ from architectures.sdnet import SDNet
 from idas.metrics.tf_metrics import dice_coe
 from idas.losses.tf_losses import softmax_weighted_cross_entropy
 from tensorflow.core.framework import summary_pb2
+import errno
 
 
 class Model(DatasetInterfaceWrapper):
@@ -480,7 +481,23 @@ class Model(DatasetInterfaceWrapper):
 
     def test(self, input_data):
         """ Test the model on input_data """
-        pass
+        if self.standardize:
+            print('Remember to standardize your data!')
+
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            sess.run(tf.local_variables_initializer())
+            saver = tf.train.Saver()
+            ckpt = tf.train.get_checkpoint_state(os.path.dirname(self.checkpoint_dir + '/checkpoint'))
+            if ckpt and ckpt.model_checkpoint_path:
+                saver.restore(sess, ckpt.model_checkpoint_path)
+                print('Returning: (soft anatomy, hard anatomy, predicted mask)')
+                output = sess.run([self.soft_anatomy, self.hard_anatomy, self.pred_mask],
+                                  feed_dict={self.sup_input_data: input_data, self.is_training: False})
+                return output
+            else:
+                raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT),
+                                        self.checkpoint_dir + ' (checkpoint_dir)')
 
     def train(self, n_epochs):
         """ The train function alternates between training one epoch and evaluating """
