@@ -89,7 +89,6 @@ class SDNet(object):
             with tf.variable_scope('ModalityEncoder'):
                 anatomy = self.hard_anatomy if (self.anatomy is None) else self.anatomy
                 mod_encoder = ModalityEncoder(incoming, anatomy, self.nz_latent, self.is_training).build()
-                # mod_encoder = ModalityEncoder(incoming, self.hard_anatomy, self.nz_latent, self.is_training).build()
                 self.z_mean, self.z_logvar = mod_encoder.get_z_stats()
                 self.sampled_z = mod_encoder.get_z_sample()
 
