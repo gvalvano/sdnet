@@ -18,7 +18,6 @@ def define_flags():
     tf.flags.DEFINE_integer('b_size', 4, "batch size")
 
     tf.flags.DEFINE_integer('n_anatomical_masks', 8, "number of extracted anatomical masks")
-    tf.flags.DEFINE_integer('n_frame_composing_masks', 8, "number composing masks for next frame mask prediction")
     tf.flags.DEFINE_integer('nz_latent', 8, "number latent variable for z code (encoder modality)")
 
     # ____________________________________________________ #
@@ -31,7 +30,7 @@ def define_flags():
     # =============== INTERNAL VARIABLES ================= #
 
     # internal variables:
-    tf.flags.DEFINE_integer('num_threads', 20, "number of threads for loading data")
+    tf.flags.DEFINE_integer('num_threads', 20, "number of CPU threads for loading and pre-process data")
     tf.flags.DEFINE_integer('skip_step', 2000, "frequency of printing batch report")
     tf.flags.DEFINE_bool('tensorboard_verbose', True, "if True: save also layers weights every N epochs")
 
