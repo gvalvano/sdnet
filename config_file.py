@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-RUN_ID = 'SDNet'  # _Adv0.00_tframe0.0'
+RUN_ID = 'SDNet'
 data_path = './data/acdc_data'
 
 
@@ -26,7 +26,6 @@ def define_flags():
 
     tf.flags.DEFINE_bool('augment', True, "Perform data augmentation")
     tf.flags.DEFINE_bool('standardize', False, "Perform data standardization (z-score)")  # data already pre-processed
-    # (others, such as learning rate decay params...)
 
     # ____________________________________________________ #
     # =============== INTERNAL VARIABLES ================= #
