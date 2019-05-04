@@ -14,7 +14,7 @@ class SDNet(object):
 
     def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, anatomy=None, name='Model'):
         """
-        SDNet architecture:
+        SDNet architecture. For details, refer to:
           "Factorised Representation Learning in Cardiac Image Analysis" (2019), arXiv preprint arXiv:1903.09467
           Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A.
 
