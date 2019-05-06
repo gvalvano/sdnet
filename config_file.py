@@ -39,9 +39,6 @@ def define_flags():
 
     # ACDC data set:
     tf.flags.DEFINE_string('acdc_data_path', data_path, """Path of data files.""")
-    tf.flags.DEFINE_integer('acdc_n_train', 70, """Number of subjects for train (tot. number = 100).""")
-    tf.flags.DEFINE_integer('acdc_n_valid', 10, """Number of subjects for validation (tot. number = 100).""")
-    tf.flags.DEFINE_integer('acdc_n_test', 20, """Number of subjects for test (tot. number = 100).""")
 
     # data specs:
     tf.flags.DEFINE_list('input_size', [128, 128], "input size")
