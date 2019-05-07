@@ -117,14 +117,14 @@ class DatasetInterface(object):
 
             train_data = tf.data.Dataset.from_tensor_slices(_train_data)
             train_data = train_data.map(
-                lambda filename: tf.py_func(  # Parse the record into tensors
+                lambda filename: tf.py_function(  # Parse the record into tensors
                     self.data_parser,
                     [filename, standardize, augment],
                     [tf.float32]), num_parallel_calls=num_threads)
 
             valid_data = tf.data.Dataset.from_tensor_slices(_valid_data)
             valid_data = valid_data.map(
-                lambda filename: tf.py_func(  # Parse the record into tensors
+                lambda filename: tf.py_function(  # Parse the record into tensors
                     self.data_parser,
                     [filename, standardize, False],
                     [tf.float32]), num_parallel_calls=num_threads)
