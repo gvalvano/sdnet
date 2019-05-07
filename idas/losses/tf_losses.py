@@ -30,7 +30,7 @@ def iou_loss(output, target, axis=(1, 2, 3), smooth=1e-12):
     return 1.0 - jaccard_coe(output, target, axis=axis, smooth=smooth, _name='iou_coe')
 
 
-def softmax_weighted_cross_entropy(y_pred, y_true, num_classes, eps=1e-12):
+def weighted_softmax_cross_entropy(y_pred, y_true, num_classes, eps=1e-12):
     """
     Define weighted cross-entropy function for classification tasks.
     :param y_pred: tensor [None, width, height, n_classes]
@@ -50,7 +50,7 @@ def softmax_weighted_cross_entropy(y_pred, y_true, num_classes, eps=1e-12):
     softmax = tf.nn.softmax(y_pred)
 
     w_cross_entropy = -tf.reduce_sum(tf.multiply(y_true * tf.log(softmax + eps), weights), reduction_indices=[1])
-    loss = tf.reduce_mean(w_cross_entropy, name='weighted_cross_entropy')
+    loss = tf.reduce_mean(w_cross_entropy, name='weighted_softmax_cross_entropy')
     return loss
 
 
@@ -113,7 +113,7 @@ def vae_loss(z_mean, z_logstd, y_true, y_pred, n_outputs):
 def gradient_loss(y_true, y_pred):
     """
     Computes gradient loss as the mean square error on the sobel filtered image
-    It works on 4D tensors
+    # TODO: update implementation to make it work for any input dimension
     """
     pred_grad = tf.reduce_sum(tf.image.sobel_edges(y_pred[:, :, :, 0]), -1)
     input_grad = tf.reduce_sum(tf.image.sobel_edges(y_true[:, :, :, 0]), -1)

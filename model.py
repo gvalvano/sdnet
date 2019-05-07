@@ -11,7 +11,7 @@ import config_file
 from architectures.mask_discriminator import MaskDiscriminator
 from architectures.sdnet import SDNet
 from idas.metrics.tf_metrics import dice_coe
-from idas.losses.tf_losses import softmax_weighted_cross_entropy
+from idas.losses.tf_losses import weighted_softmax_cross_entropy
 from tensorflow.core.framework import summary_pb2
 import errno
 
@@ -109,11 +109,10 @@ class Model(DatasetInterfaceWrapper):
 
         # - - - - - - -
         # define the model for supervised, unsupervised and temporal frame prediction data:
-        sdnet_sup = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
-        sdnet_sup = sdnet_sup.build(self.sup_input_data)
+        sdnet = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
 
-        sdnet_unsup = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
-        sdnet_unsup = sdnet_unsup.build(self.unsup_input_data, reuse=True)
+        sdnet_sup = sdnet.build(self.sup_input_data)
+        sdnet_unsup = sdnet.build(self.unsup_input_data, reuse=True)
 
         # - - - - - - -
         # define tensors for the losses:
@@ -137,7 +136,6 @@ class Model(DatasetInterfaceWrapper):
             self.disc_real = model_real.get_prediction()
             self.disc_fake = model_fake.get_prediction()
 
-
     def define_losses(self):
         """
         Define loss function.
@@ -159,7 +157,7 @@ class Model(DatasetInterfaceWrapper):
         # _______
         # Weighted Cross Entropy loss:
         with tf.variable_scope('WXEntropy_loss'):
-            self.wxentropy_loss = softmax_weighted_cross_entropy(y_pred=self.pred_mask, y_true=self.sup_output_data, num_classes=4)
+            self.wxentropy_loss = weighted_softmax_cross_entropy(y_pred=self.pred_mask, y_true=self.sup_output_data, num_classes=4)
 
         # _______
         # KL Divergence loss:
