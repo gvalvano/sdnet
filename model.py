@@ -97,13 +97,13 @@ class Model(DatasetInterfaceWrapper):
                          input_size=self.input_size,
                          num_threads=self.num_threads)
 
-    def get_data(self):  # *kwargs
+    def get_data(self):
 
         self.sup_train_init, self.sup_valid_init, self.sup_input_data, self.sup_output_data = \
-            super(Model, self).get_acdc_sup_data(data_path=self.acdc_data_path)
+            super(Model, self).get_acdc_sup_data(data_path=self.acdc_data_path, repeat=True)
 
         self.unsup_train_init, self.unsup_valid_init, self.unsup_input_data, self.unsup_output_data = \
-            super(Model, self).get_acdc_unsup_data(data_path=self.acdc_data_path)
+            super(Model, self).get_acdc_unsup_data(data_path=self.acdc_data_path, repeat=False)
 
     def define_model(self):
 

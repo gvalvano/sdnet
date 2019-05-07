@@ -1,7 +1,6 @@
 """
 Wrapper to the dataset interfaces
 """
-from data_interface.interfaces.acdc_temporal_frames_interface import DatasetInterface as ACDCTemporalInterface
 from data_interface.interfaces.acdc_sup_interface import DatasetInterface as ACDCSupInterface
 from data_interface.interfaces.acdc_unsup_interface import DatasetInterface as ACDCUnsupInterface
 
@@ -24,10 +23,11 @@ class DatasetInterfaceWrapper(object):
         self.input_size = input_size
         self.num_threads = num_threads
 
-    def get_acdc_sup_data(self, data_path):
+    def get_acdc_sup_data(self, data_path, repeat=False):
         """
         wrapper to ACDC data set. Gets input images and annotated masks.
         :param data_path: (str) path to data directory
+        :param repeat: (bool) whether to repeat the input indefinitely
         :return: iterator initializer for train and valid data; input and output frame; time and delta time.
         """
         print('Define input pipeline for supervised data...')
@@ -39,15 +39,17 @@ class DatasetInterfaceWrapper(object):
             b_size=self.batch_size,
             augment=self.augment,
             standardize=self.standardize,
+            repeat=repeat,
             num_threads=self.num_threads)
 
         return train_init, valid_init, input_data, output_data
 
-    def get_acdc_unsup_data(self, data_path):
+    def get_acdc_unsup_data(self, data_path, repeat=False):
         """
         wrapper to ACDC data set. Gets input images without ground truth mask. Notice that output_data is just an alias
         for input_data
         :param data_path: (str) path to data directory
+        :param repeat: (bool) whether to repeat the input indefinitely
         :return: iterator initializer for train and valid data; input and output frame; time and delta time.
         """
         print('Define input pipeline for unsupervised data...')
@@ -59,6 +61,8 @@ class DatasetInterfaceWrapper(object):
             b_size=self.batch_size,
             augment=self.augment,
             standardize=self.standardize,
-            num_threads=self.num_threads)
+            repeat=repeat,
+            num_threads=self.num_threads
+        )
 
         return train_init, valid_init, input_data, output_data

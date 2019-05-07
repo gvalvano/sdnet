@@ -10,6 +10,7 @@ from idas.utils import get_available_gpus
 import os
 from glob import glob
 import cv2
+from idas.utils import print_yellow_text
 
 
 class DatasetInterface(object):
@@ -102,11 +103,12 @@ class DatasetInterface(object):
 
         return batch
 
-    def get_data(self, b_size, augment=False, standardize=False, num_threads=4):
+    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4):
         """ Returns iterators on the dataset along with their initializers.
         :param b_size: batch size
         :param augment: if to perform data augmentation
         :param standardize: if to standardize the input data
+        :param repeat: (bool) whether to repeat the input indefinitely
         :param num_threads: for parallel computing
         :return: train_init, valid_init, input_data, label
         """
@@ -136,7 +138,10 @@ class DatasetInterface(object):
                 valid_data = valid_data.map(lambda v: tf.cast(v, dtype=tf.float32), num_parallel_calls=num_threads)
 
             train_data = train_data.shuffle(buffer_size=len(self.x_train_paths))
-            # train_data = train_data.repeat()  # Repeat the input indefinitely
+
+            if repeat:
+                print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
+                train_data = train_data.repeat()  # Repeat the input indefinitely
 
             # un-batch first, then batch the data
             train_data = train_data.apply(tf.data.experimental.unbatch())

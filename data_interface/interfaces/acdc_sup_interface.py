@@ -56,11 +56,12 @@ class DatasetInterface(object):
 
         return x_train, y_train
 
-    def get_data(self, b_size, augment=False, standardize=False, num_threads=4):
+    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4):
         """ Returns iterators on the dataset along with their initializers.
         :param b_size: batch size
         :param augment: if to perform data augmentation
         :param standardize: if to standardize the input data
+        :param repeat: (bool) whether to repeat the input indefinitely
         :param num_threads: for parallel computing
         :return: train_init, valid_init, input_data, label
         """
@@ -82,8 +83,9 @@ class DatasetInterface(object):
 
             train_data = train_data.shuffle(buffer_size=len(self.x_train))
 
-            print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
-            train_data = train_data.repeat()  # Repeat the input indefinitely
+            if repeat:
+                print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
+                train_data = train_data.repeat()  # Repeat the input indefinitely
 
             train_data = train_data.batch(b_size, drop_remainder=True)
             valid_data = valid_data.batch(b_size, drop_remainder=True)
