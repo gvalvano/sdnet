@@ -81,7 +81,6 @@ class DatasetInterface(object):
                 train_data = train_data.map(self._data_augmentation_ops, num_parallel_calls=num_threads)
 
             train_data = train_data.shuffle(buffer_size=len(self.x_train))
-            valid_data = valid_data.shuffle(buffer_size=len(self.x_validation))
 
             print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
             train_data = train_data.repeat()  # Repeat the input indefinitely

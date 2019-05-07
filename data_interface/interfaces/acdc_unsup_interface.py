@@ -136,7 +136,6 @@ class DatasetInterface(object):
                 valid_data = valid_data.map(lambda v: tf.cast(v, dtype=tf.float32), num_parallel_calls=num_threads)
 
             train_data = train_data.shuffle(buffer_size=len(self.x_train_paths))
-            valid_data = valid_data.shuffle(buffer_size=len(self.x_validation_paths))
             # train_data = train_data.repeat()  # Repeat the input indefinitely
 
             # un-batch first, then batch the data
