@@ -31,8 +31,9 @@ and you will be able to train the neural network without such an additional CPU 
 4. Run *train.py* to train the model.
 
 You can monitor the training results using TensorBoard running the command:
-> tensorboard --logdir=results/graphs
-
+```bash
+tensorboard --logdir=results/graphs
+```
 in your bash under the project folder.
 
 ---------------------
