@@ -123,6 +123,7 @@ class Model(DatasetInterfaceWrapper):
         self.pred_mask_oh = sdnet_sup.get_pred_mask(one_hot=True)
         self.soft_anatomy = sdnet_sup.get_soft_anatomy()
         self.hard_anatomy = sdnet_sup.get_hard_anatomy()
+        self.sup_reconstruction = sdnet_sup.get_input_reconstruction()
 
         # unsup pathway
         self.unsup_reconstruction = sdnet_unsup.get_input_reconstruction()
@@ -280,6 +281,7 @@ class Model(DatasetInterfaceWrapper):
             img_inp_s = tf.summary.image('input_sup', self.sup_input_data[..., :], max_outputs=3)
             img_inp_us = tf.summary.image('input_unsup', self.unsup_input_data[..., :], max_outputs=3)
         with tf.name_scope('1_Reconstruction'):
+            img_rec_s = tf.summary.image('sup_rec', self.sup_reconstruction, max_outputs=3)
             img_rec_us = tf.summary.image('unsup_rec', self.unsup_reconstruction, max_outputs=3)
         with tf.name_scope('2_Segmentation'):
             img_pred_mask = tf.summary.image('pred_mask', self.pred_mask_oh[..., 1:], max_outputs=3)
@@ -314,7 +316,7 @@ class Model(DatasetInterfaceWrapper):
 
         # _______________________________
         # merging all images summaries:
-        sup_valid_images_summaries = [img_inp_s, img_mask, img_pred_mask]
+        sup_valid_images_summaries = [img_inp_s, img_rec_s, img_mask, img_pred_mask]
         unsup_valid_images_summaries = [img_inp_us, img_rec_us]
         sup_valid_images_summaries.extend(img_s_an_lst)
         sup_valid_images_summaries.extend(img_h_an_lst)
