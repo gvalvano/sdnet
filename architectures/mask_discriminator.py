@@ -69,7 +69,7 @@ class MaskDiscriminator(object):
                 nf = self.n_filters * 2 * (2 ** i)
                 stride = 1 if i == self.n_blocks - 1 else 2
                 scp = 'sn_conv_{0}'.format(str(i))
-                layer = self._downsample_block(layer, n_filters=nf, stride=stride, scope=scp)
+                layer = self._conv_and_maybe_downsample_block(layer, n_filters=nf, stride=stride, scope=scp)
 
             if self.out_mode == 'prob_map':
                 # output a 2D probability map:
