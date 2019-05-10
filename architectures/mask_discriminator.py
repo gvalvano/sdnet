@@ -58,7 +58,6 @@ class MaskDiscriminator(object):
         :param input_tensor: (tensor) incoming tensor
         :param reuse: (bool) if True, reuse trained weights
         """
-        assert out_mode in ['scalar', 'prob_map']
 
         with tf.variable_scope(self.name, reuse=reuse):
 
