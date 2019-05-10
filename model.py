@@ -109,16 +109,17 @@ class Model(DatasetInterfaceWrapper):
 
         # - - - - - - -
         # define the model for supervised, unsupervised and temporal frame prediction data:
-        sdnet = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
+        sdnet_sup = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
+        sdnet_sup = sdnet_sup.build(self.sup_input_data)
 
-        sdnet_sup = sdnet.build(self.sup_input_data)
-        sdnet_unsup = sdnet.build(self.unsup_input_data, reuse=True)
+        sdnet_unsup = SDNet(self.n_anatomical_masks, self.nz_latent, self.n_classes, self.is_training, name='Model')
+        sdnet_unsup = sdnet_unsup.build(self.unsup_input_data, reuse=True)
 
         # - - - - - - -
         # define tensors for the losses:
 
         # sup pathway
-        self.pred_mask = sdnet_sup.get_pred_mask(one_hot=False)
+        self.pred_mask = sdnet_sup.get_pred_mask(one_hot=False, output='linear')
         self.pred_mask_oh = sdnet_sup.get_pred_mask(one_hot=True)
         self.soft_anatomy = sdnet_sup.get_soft_anatomy()
         self.hard_anatomy = sdnet_sup.get_hard_anatomy()
@@ -131,8 +132,10 @@ class Model(DatasetInterfaceWrapper):
         # - - - - - - -
         # build Mask Discriminator (Least Square GAN)
         with tf.variable_scope('MaskDiscriminator'):
-            model_real = MaskDiscriminator(self.sup_output_data, self.is_training, n_filters=64).build()
-            model_fake = MaskDiscriminator(self.pred_mask_oh, self.is_training, n_filters=64).build(reuse=True)
+            model_real = MaskDiscriminator(self.is_training, n_filters=64, out_mode='scalar')
+            model_real = model_real.build(self.sup_output_data, reuse=False)
+            model_fake = MaskDiscriminator(self.is_training, n_filters=64, out_mode='scalar')
+            model_fake = model_fake.build(self.pred_mask_oh, reuse=True)
             self.disc_real = model_real.get_prediction()
             self.disc_fake = model_fake.get_prediction()
 
@@ -148,11 +151,11 @@ class Model(DatasetInterfaceWrapper):
 
         # _______
         # Dice loss:
-        # with tf.variable_scope('3Chs_Dice_loss'):
-        #     soft_pred_mask = tf.nn.softmax(self.pred_mask)
-        #     dice_3chs = dice_coe(output=soft_pred_mask[..., 1:], target=self.sup_output_data[..., 1:])
-        #     dice = dice_coe(output=soft_pred_mask, target=self.sup_output_data)
-        #     self.dice_loss = 1.0 - dice  # dice_3chs
+        with tf.variable_scope('3Chs_Dice_loss'):
+            soft_pred_mask = tf.nn.softmax(self.pred_mask)
+            dice_3chs = dice_coe(output=soft_pred_mask[..., 1:], target=self.sup_output_data[..., 1:])
+            # dice = dice_coe(output=soft_pred_mask, target=self.sup_output_data)
+            self.dice_loss = 1.0 - dice_3chs  # dice
 
         # _______
         # Weighted Cross Entropy loss:
@@ -183,13 +186,15 @@ class Model(DatasetInterfaceWrapper):
 
         # define weights for the cost contributes:
         w_kl = 0.01
+        w_segm = 10.0
         w_rec = 1.0
         w_zrec = 1.0
-        w_adv = 0.0
+        w_adv = 10.0
 
         # define losses for supervised, unsupervised and frame prediction steps:
-        self.sup_loss = self.wxentropy_loss + \
-                        w_adv * self.adv_gen_loss      # you can try both: wxentropy_loss / dice_loss
+        self.sup_loss = w_segm * self.dice_loss + \
+                        w_adv * self.adv_gen_loss
+        # TODO: try also:    w_segm * (0.1 * self.wxentropy_loss + self.dice_loss) + w_adv * self.adv_gen_loss
 
         self.unsup_loss = w_kl * self.kl_div_loss + \
                           w_rec * self.rec_loss + \
@@ -272,8 +277,8 @@ class Model(DatasetInterfaceWrapper):
 
         # Image summaries:
         with tf.name_scope('0_Input'):
-            img_inp_s = tf.summary.image('input_sup', self.sup_input_data, max_outputs=3)
-            img_inp_us = tf.summary.image('input_unsup', self.unsup_input_data, max_outputs=3)
+            img_inp_s = tf.summary.image('input_sup', self.sup_input_data[..., :], max_outputs=3)
+            img_inp_us = tf.summary.image('input_unsup', self.unsup_input_data[..., :], max_outputs=3)
         with tf.name_scope('1_Reconstruction'):
             img_rec_us = tf.summary.image('unsup_rec', self.unsup_reconstruction, max_outputs=3)
         with tf.name_scope('2_Segmentation'):
@@ -311,13 +316,11 @@ class Model(DatasetInterfaceWrapper):
         # merging all images summaries:
         sup_valid_images_summaries = [img_inp_s, img_mask, img_pred_mask]
         unsup_valid_images_summaries = [img_inp_us, img_rec_us]
-        tframe_valid_images_summaries = []
-        tframe_valid_images_summaries.extend(img_s_an_lst)
-        tframe_valid_images_summaries.extend(img_h_an_lst)
+        sup_valid_images_summaries.extend(img_s_an_lst)
+        sup_valid_images_summaries.extend(img_h_an_lst)
 
         self.sup_valid_images_summary_op = tf.summary.merge(sup_valid_images_summaries)
         self.unsup_valid_images_summary_op = tf.summary.merge(unsup_valid_images_summaries)
-        self.tframe_valid_images_summary_op = tf.summary.merge(tframe_valid_images_summaries)
 
         # ---- #
         if self.tensorboard_verbose:
@@ -372,11 +375,13 @@ class Model(DatasetInterfaceWrapper):
             while True:
                 caller.on_batch_begin(training_state=True, **self.callbacks_kwargs)
 
-                total_sup_loss += self._train_sup_step(sess, writer, step)
-                step += 1
+                if bool(getrandbits(1)):
+                    total_sup_loss += self._train_sup_step(sess, writer, step)
+                    step += 1
 
-                total_unsup_loss += self._train_disc_step(sess, writer, step)
-                step += 1
+                if bool(getrandbits(1)):
+                    total_unsup_loss += self._train_disc_step(sess, writer, step)
+                    step += 1
 
                 # This is the only tensorflow dataset with repeat=False, so it finishes and launch an exception:
                 total_unsup_loss += self._train_unsup_step(sess, writer, step)
@@ -464,7 +469,7 @@ class Model(DatasetInterfaceWrapper):
             dice_loss = 1.0 - avg_dice
             delta_t = time.time() - start_time
 
-            value = summary_pb2.Summary.Value(tag="Dice_1/validation/Dice_3channels_avg", simple_value=avg_dice)
+            value = summary_pb2.Summary.Value(tag="Dice_1/validation/dice_3channels_avg", simple_value=avg_dice)
             summary = summary_pb2.Summary(value=[value])
             writer.add_summary(summary, global_step=step)
 

@@ -71,10 +71,10 @@ class MaskDiscriminator(object):
                 scp = 'sn_conv_{0}'.format(str(i))
                 layer = self._downsample_block(layer, n_filters=nf, stride=stride, scope=scp)
 
-            if out_mode == 'prob_map':
+            if self.out_mode == 'prob_map':
                 # output a 2D probability map:
                 self.output = spectral_norm_conv2d(layer, filters=1, kernel_size=4, stride=1, padding='valid', scope='sn_conv_out')
-            elif out_mode == 'scalar':
+            elif self.out_mode == 'scalar':
                 # output a scalar value:
                 layer = tf.layers.flatten(layer)
                 self.output = tf.layers.dense(layer, units=1)
@@ -86,7 +86,7 @@ class MaskDiscriminator(object):
         return self.output
 
     @staticmethod
-    def _downsample_block(incoming, n_filters, stride, scope):
+    def _conv_and_maybe_downsample_block(incoming, n_filters, stride, scope):
         """
         Applies a spectral-norm convolutional layer using given stride. The output activation is a leaky relu.
         :param incoming: incoming tensor

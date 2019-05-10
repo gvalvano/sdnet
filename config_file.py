@@ -30,8 +30,8 @@ def define_flags():
     # =============== INTERNAL VARIABLES ================= #
 
     # internal variables:
-    tf.flags.DEFINE_integer('num_threads', 20, "number of CPU threads for loading and pre-process data")
-    tf.flags.DEFINE_integer('skip_step', 2000, "frequency of printing batch report")
+    tf.flags.DEFINE_integer('num_threads', 20, "number of threads for loading data")
+    tf.flags.DEFINE_integer('skip_step', 4000, "frequency of printing batch report")
     tf.flags.DEFINE_bool('tensorboard_verbose', True, "if True: save also layers weights every N epochs")
 
     # ____________________________________________________ #
