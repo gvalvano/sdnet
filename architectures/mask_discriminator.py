@@ -12,15 +12,19 @@ class MaskDiscriminator(object):
     def __init__(self, is_training, n_filters=64, n_blocks=4, out_mode='scalar', name='MaskDiscriminator'):
         """
         Class for building the mask discriminator
-        :param incoming: (tensor) incoming tensor
-        :param n_filters: (int) number of filters at the first convolutional layer
-        :param n_blocks: (int) number of down-sample blocks
         :param is_training: (tf.placeholder(dtype=tf.bool) or bool) variable to define training or test mode; it is
                         needed for the behaviour of dropout (which behaves differently at train and test time)
+        :param n_filters: (int) number of filters at the first convolutional layer
+        :param n_blocks: (int) number of down-sample blocks
+        :param out_mode: (str) output mode: valid entries are ['scalar', 'prob_map']. Defaults to 'scalar'.
+                        scalar --> output a scalar value as in vanilla GAN
+                        prob_map --> outputs a probability map of values (each value is a scalar associated to its given
+                            receptive field)
+        :param name: (str) name for the variable scope
 
         - - - - - - - - - - - - - - - -
         Notice that:
-          - output is linear (this is meant to be used as LeastSquare-GAN)  <<=============
+          - output is linear (this is meant to be used as LeastSquare-GAN)
         - - - - - - - - - - - - - - - -
 
         Example of usage:
@@ -51,11 +55,8 @@ class MaskDiscriminator(object):
     def build(self, input_tensor, reuse=tf.AUTO_REUSE):
         """
         Build the model.
+        :param input_tensor: (tensor) incoming tensor
         :param reuse: (bool) if True, reuse trained weights
-        :param out_mode: (str) output mode: valid entries are ['scalar', 'prob_map']. Defaults to 'scalar'.
-                        scalar --> output a scalar value as in vanilla GAN
-                        prob_map --> outputs a probability map of values (each value is a scalar associated to its given
-                            receptive field)
         """
         assert out_mode in ['scalar', 'prob_map']
 
