@@ -193,9 +193,8 @@ class Model(DatasetInterfaceWrapper):
         w_adv = 10.0
 
         # define losses for supervised, unsupervised and frame prediction steps:
-        self.sup_loss = w_segm * self.dice_loss + \
+        self.sup_loss = w_segm * (0.1 * self.wxentropy_loss + self.dice_loss) + \
                         w_adv * self.adv_gen_loss
-        # TODO: try also:    w_segm * (0.1 * self.wxentropy_loss + self.dice_loss) + w_adv * self.adv_gen_loss
 
         self.unsup_loss = w_kl * self.kl_div_loss + \
                           w_rec * self.rec_loss + \
