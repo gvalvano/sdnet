@@ -126,14 +126,20 @@ class SDNet(object):
     def get_input_reconstruction(self):
         return self.reconstruction
 
-    def get_pred_mask(self, one_hot):
+    def get_pred_mask(self, one_hot, output=None):
         """
         Notice that the output is not necessarily either one-hot encoded, nor in the range [0, 1]. Use one-hot flag to
         obtain a segmentation mask
         :param one_hot: (bool) if True, returns one-hot segmentation mask
+        :param output: (str) optional, if one-hot is False then output must be either 'linear' or 'softmax'
         :return:
         """
         if not one_hot:
-            return self.pred_mask
+            assert output in ['linear', 'softmax']
+            if output == 'linear':
+                print('Activation linear.')
+                return self.pred_mask
+            else:
+                return tf.nn.softmax(self.pred_mask)
         else:
             return tf.one_hot(tf.argmax(self.pred_mask, axis=-1), self.n_classes)
