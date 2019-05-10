@@ -66,7 +66,7 @@ class SDNet(object):
         self.z_regress = None
         self.pred_mask = None
 
-    def build(self, incoming, reuse=tf.AUTO_REUSE):
+    def build(self, input_image, reuse=tf.AUTO_REUSE):
         """
         Build the model.
         """
@@ -74,7 +74,7 @@ class SDNet(object):
             # - - - - - - -
             # build Anatomy Encoder
             with tf.variable_scope('AnatomyEncoder'):
-                unet = UNet(incoming, n_out=self.n_anatomical_masks, is_training=self.is_training, n_filters=64)
+                unet = UNet(input_image, n_out=self.n_anatomical_masks, is_training=self.is_training, n_filters=64)
                 unet_encoder = unet.build_encoder()
                 unet_bottleneck = unet.build_bottleneck(unet_encoder)
                 unet_decoder = unet.build_decoder(unet_bottleneck)
@@ -88,7 +88,7 @@ class SDNet(object):
             # build Modality Encoder
             with tf.variable_scope('ModalityEncoder'):
                 anatomy = self.hard_anatomy if (self.anatomy is None) else self.anatomy
-                mod_encoder = ModalityEncoder(incoming, anatomy, self.nz_latent, self.is_training).build()
+                mod_encoder = ModalityEncoder(input_image, anatomy, self.nz_latent, self.is_training).build()
                 self.z_mean, self.z_logvar = mod_encoder.get_z_stats()
                 self.sampled_z = mod_encoder.get_z_sample()
 
