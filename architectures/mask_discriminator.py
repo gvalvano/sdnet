@@ -9,7 +9,7 @@ b_init = tf.zeros_initializer()
 
 class MaskDiscriminator(object):
 
-    def __init__(self, incoming, is_training, n_filters=64, n_blocks=4, name='MaskDiscriminator'):
+    def __init__(self, is_training, n_filters=64, n_blocks=4, out_mode='scalar', name='MaskDiscriminator'):
         """
         Class for building the mask discriminator
         :param incoming: (tensor) incoming tensor
@@ -38,8 +38,9 @@ class MaskDiscriminator(object):
             loss_generator = 0.5*E[(y_fake - 1)^2 )]
 
         """
+        assert out_mode in ['scalar', 'prob_map']
+        self.out_mode = out_mode
 
-        self.incoming = incoming
         self.n_filters = n_filters
         self.n_blocks = n_blocks
         self.is_training = is_training
@@ -47,7 +48,7 @@ class MaskDiscriminator(object):
 
         self.output = None
 
-    def build(self, reuse=tf.AUTO_REUSE, out_mode='scalar'):
+    def build(self, input_tensor, reuse=tf.AUTO_REUSE):
         """
         Build the model.
         :param reuse: (bool) if True, reuse trained weights
