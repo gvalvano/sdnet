@@ -61,7 +61,7 @@ class MaskDiscriminator(object):
 
         with tf.variable_scope(self.name, reuse=reuse):
 
-            layer = layers.conv2d(self.incoming, filters=self.n_filters, kernel_size=4, strides=2, padding='same',
+            layer = layers.conv2d(input_tensor, filters=self.n_filters, kernel_size=4, strides=2, padding='same',
                                   kernel_initializer=he_init, bias_initializer=b_init)
             layer = tf.nn.leaky_relu(layer, alpha=0.2)
 
