@@ -1,34 +1,34 @@
-# SDNet
+# Convolutional Neural Networks for the Segmentation of Microcalcification in Mammography Imaging
 
-**Tensorflow implementation of SDNet**
+**Tensorflow implementation of Segmentator and Detector neural networks**
 
 
 For details refer to the paper:
 
-> Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A. (2019). 
-> *Factorised Representation Learning in Cardiac Image Analysis*. arXiv preprint arXiv:1903.09467.
+> Valvano, Gabriele, et al. "Convolutional Neural Networks for the segmentation 
+> of microcalcification in Mammography Imaging." Journal of Healthcare Engineering 2019 (2019).
 
 ----------------------------------
 **Data:**
 
-Automatic Cardiac Diagnostic Challenge 2017 database. In total there are images of 100 patients, for which manual
-segmentations of the heart cavity, myocardium and right ventricle are provided.
+For our experiments, we used 283 mammography images with a resolution of 0.05 mm. Among these images, there are both natively 
+digital mammograms and digitized images. Every image is associated to the corresponding manual segmentation mask realized by a 
+breast imaging radiologist. We randomly chose 231 mammograms and the annotated labels to build the training set while 25 mammographic
+images were used to validate intermediate results and compare different networks architectures. +e remaining 27 images were taken 
+apart to build the test set and measure the final performances.
 
-Database at: [*acdc_challenge*](https://www.creatis.insa-lyon.fr/Challenge/acdc/databases.html).\
-An atlas of the heart in each projection at: [*atlas*](http://tuttops.altervista.org/ecocardiografia_base.html).
+We contemplated 4 possible classes of patch:
+ - Class C1: patches whose central pixel belongs to a microcalcification
+ - Class C2: patches with MCs close to the center but with the central pixel not belonging to a calcification
+ - Class C3: cases where a calcification resides inside the patch but is located peripherally, and the central pixel does not 
+   belong to a MC
+ - Class C4: cases where no MC is present inside the patch
 
 # How to use it
 
-1. Download the ACDC data set
-2. Split the data in train, validation and test set folders (e.g. using *split_data.py*)
-3. Run *prepare_dataset.py* to pre-process the data. By doing this, the image pre-processing will be offline 
-and you will be able to train the neural network without such an additional CPU overload at training time 
-(there are expensive operations such as interpolations). Data will be:
-    - rescaled to the same resolution
-    - the slices will be placed on the first axis
-    - resized to desired dimension (i.e. 128x128)
-    - masks one-hot encoded
-4. Run *train.py* to train the model.
+1. Prepare your own dataset
+2. Split the data in train, validation and test set folders
+3. Run *train.py* to train the model.
 
 You can monitor the training results using TensorBoard running the command:
 ```bash
