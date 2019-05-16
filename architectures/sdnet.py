@@ -78,8 +78,11 @@ class SDNet(object):
                 unet_encoder = unet.build_encoder()
                 unet_bottleneck = unet.build_bottleneck(unet_encoder)
                 unet_decoder = unet.build_decoder(unet_bottleneck)
-                unet_output = unet.build_output(unet_decoder)
-                self.soft_anatomy = tf.nn.softmax(unet_output)
+                coarse_output = unet.build_output(unet_decoder)
+
+                # apply softmax to scale the coarse_output channels in the range [0÷1]. This will avoid the same
+                # anatomy to be encoded twice from the model (one anatomy per channel).
+                self.soft_anatomy = tf.nn.softmax(coarse_output)
 
             with tf.variable_scope('RoundingLayer'):
                 self.hard_anatomy = rounding_layer(self.soft_anatomy)
