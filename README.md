@@ -37,8 +37,16 @@ tensorboard --logdir=results/graphs
 in your bash under the project folder.
 
 ---------------------
+**Examples:**
 
-For problems, bugs, etc. please contact me :)
-Enjoy the code!
+
+---------------------
+
+For problems, bugs, etc. please contact me at one of the following email addresses:
+
+  *gabriele.valvano@imtlucca.it* \
+  *g.valvano@sms.ed.ac.uk*
+
+Enjoy the code! :)
 
 **Gabriele**
