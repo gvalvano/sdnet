@@ -5,8 +5,8 @@ N.B. this will load the ACDC data set in your RAM memory. Despite it is a small 
     free memory.
 _______________________________________________________________________________________________________________________
 
-Running this file you will create pre-processed volumes to use to train the SDNet (useful to avoid to overload the CPU 
-during training). In this way the pre-processing will be entirely off-line. Data augmentation is instead performed at 
+Running this file you will create pre-processed volumes to use to train the SDNet (useful to avoid to overload the CPU
+during training). In this way the pre-processing will be entirely off-line. Data augmentation is instead performed at
 run time.
 
 """
@@ -23,8 +23,8 @@ from sklearn.utils import shuffle
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # data set dirs:
 
-source_dir = './data/acdc_data/'
-dest_dir = './data/acdc_data/preprocessed/'
+source_dir = './data/acdc_data/'  # + '_tmp/'
+dest_dir = './data/acdc_data/preprocessed/'  # + '_tmp/'
 
 for subdir in ['train', 'validation', 'test']:
     safe_mkdir(os.path.join(dest_dir, subdir))
@@ -41,8 +41,6 @@ mean_dy = 1.5117105
 # and variance and the data:
 img_width = int(np.round(mean_width / 16) * 16)
 img_height = int(np.round(mean_height / 16) * 16)
-img_width_small = img_width // 2
-img_height_small = img_height // 2
 img_dx = mean_dx
 img_dy = mean_dy
 
@@ -109,7 +107,7 @@ def resize_2d_slices(batch, new_size, interpolation):
     return np.array(output)
 
 
-def crop_or_pad_slice_center(batch, new_size, value=None):
+def crop_or_pad_slice_center(batch, new_size, value):
     """
     For every image in the batch, crop the image in the center so that it has a final size = new_size
     :param batch: [np.array] input batch of images, with shape [n_batches, width, height]
@@ -118,14 +116,18 @@ def crop_or_pad_slice_center(batch, new_size, value=None):
     """
     # pad always and then crop to the correct size:
     n_batches, x, y = batch.shape
-    if value is None:
-        c_value = np.mean(batch)
-    else:
-        c_value = value
+
     pad_0 = (0, 0)
     pad_1 = (int(np.ceil(max(0, img_width - x)/2)), int(np.floor(max(0, img_width - x)/2)))
     pad_2 = (int(np.ceil(max(0, img_height - y)/2)), int(np.floor(max(0, img_height - y)/2)))
-    batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='constant', constant_values=c_value)
+
+    if value is 'mean':
+        batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='mean')
+    elif value == 'min':
+        batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='minimum')
+    else:
+        c_value = value
+        batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='constant', constant_values=c_value)
 
     # delta along axis and central coordinates
     n_batches, x, y = batch.shape
@@ -151,8 +153,8 @@ def standardize_and_clip(batch):
     """
     m = np.percentile(batch, 50)
     s = np.percentile(batch, 75) - np.percentile(batch, 25)
-    lower_limit = np.percentile(batch, 5)
-    upper_limit = np.percentile(batch, 95)
+    lower_limit = np.percentile(batch, 10)
+    upper_limit = np.percentile(batch, 90)
 
     batch = np.clip(batch, a_min=lower_limit, a_max=upper_limit)
     batch = (batch - m) / (s + 1e-12)
@@ -238,12 +240,11 @@ def slice_pre_processing_pipeline(filename):
 
     # 8. crop to maximum size
     size = (img_width, img_height)
-    img_array = crop_or_pad_slice_center(img_array, new_size=size)
+    img_array = crop_or_pad_slice_center(img_array, new_size=size, value='min')
 
     # 8b. undersample and make 64x64
-    size = (img_width_small, img_height_small)
-    img_array = resize_2d_slices(img_array, new_size=size, interpolation=cv2.INTER_CUBIC)
-    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape)
+    img_array = resize_2d_slices(img_array, new_size=final_shape, interpolation=cv2.INTER_CUBIC)
+    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape, value='min')
 
     # 9. standardize and clip values out of +- 3 standard deviations
     img_array = standardize_and_clip(img_array)
@@ -289,14 +290,13 @@ def tframe_pre_processing_pipeline(filename):
         size = (x_max_scaled, y_max_scaled)
         img = resize_2d_slices(img, new_size=size, interpolation=cv2.INTER_CUBIC)
 
-        # 8. crop to maximum size
+        # 8. crop or pad to maximum size
         size = (img_width, img_height)
-        img = crop_or_pad_slice_center(img, new_size=size, value=0)
+        img = crop_or_pad_slice_center(img, new_size=size, value='min')
 
-        # 8b. undersample and make 64x64
-        size = (img_width_small, img_height_small)
-        img = resize_2d_slices(img, new_size=size, interpolation=cv2.INTER_CUBIC)
-        img = crop_or_pad_slice_center(img, new_size=final_shape)
+        # 8b. undersample and make final_shape
+        img = resize_2d_slices(img, new_size=final_shape, interpolation=cv2.INTER_CUBIC)
+        img = crop_or_pad_slice_center(img, new_size=final_shape, value='min')
 
         # 9. standardize and clip values out of +- 3 standard deviations
         img = standardize_and_clip(img)
@@ -349,9 +349,8 @@ def mask_pre_processing_pipeline(filename):
     img_array = crop_or_pad_slice_center(img_array, new_size=size, value=0)
 
     # 8b. undersample and make 64x64
-    size = (img_width_small, img_height_small)
-    img_array = resize_2d_slices(img_array, new_size=size, interpolation=cv2.INTER_NEAREST)
-    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape)
+    img_array = resize_2d_slices(img_array, new_size=final_shape, interpolation=cv2.INTER_NEAREST)
+    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape, value=0)
 
     # 9. one-hot encode: 4 classes (background + heart structures)
     img_array = one_hot_encode(img_array, 4)
