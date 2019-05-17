@@ -12,7 +12,8 @@ b_init = tf.zeros_initializer()
 
 class SDNet(object):
 
-    def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, anatomy=None, name='Model'):
+    def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, use_segmentor=False, anatomy=None,
+                 name='Model'):
         """
         SDNet architecture. For details, refer to:
           "Factorised Representation Learning in Cardiac Image Analysis" (2019), arXiv preprint arXiv:1903.09467
@@ -22,6 +23,8 @@ class SDNet(object):
         :param nz_latent: (int) number of latent dimensions outputted by modality encoder
         :param n_classes: (int) number of classes (4: background, LV, RV, MC)
         :param is_training: (tf.placeholder, or bool) training state, for batch normalization
+        :param use_segmentor: (bool) if True, use a separate network to obtain the final mask. Default behaviour (False)
+                        uses the first (n_classes - 1) anatomical masks as the segmentation channels.
         :param anatomy: (tensor) if given, the reconstruction is computed starting from z modality extracted by the
                         input data and the hard anatomy in this argument. Default: compute and use hard anatomy of the
                         input data.
@@ -32,7 +35,7 @@ class SDNet(object):
         Example of usage:
 
             # build the sdnet:
-            sdnet = SDNet(n_anatomical_masks, nz_latent, n_classes, is_training, name='Model')
+            sdnet = SDNet(n_anatomical_masks, nz_latent, n_classes, is_training, use_segmentor=False, name='Model')
             sdnet = sdnet.build(input_data)
 
             # get soft and hard anatomy:
@@ -56,6 +59,8 @@ class SDNet(object):
         self.nz_latent = nz_latent
         self.n_classes = n_classes
         self.anatomy = anatomy
+
+        self.use_segmentor = use_segmentor
 
         self.soft_anatomy = None
         self.hard_anatomy = None
@@ -108,9 +113,16 @@ class SDNet(object):
 
             # - - - - - - -
             # build Segmentor
-            with tf.variable_scope('Segmentor'):
-                segmentor = Segmentor(self.hard_anatomy, self.n_classes, is_training=self.is_training).build()
-                self.pred_mask = segmentor.get_output_mask()
+            if self.use_segmentor:
+                with tf.variable_scope('Segmentor'):
+                    segmentor = Segmentor(self.hard_anatomy, self.n_classes, is_training=self.is_training).build()
+                    self.pred_mask = segmentor.get_output_mask()
+            else:
+                heart_channels = self.soft_anatomy[..., :self.n_classes - 1]
+                non_heart_channels = self.soft_anatomy[..., self.n_classes - 1:]
+                non_hart_masks = tf.reduce_sum(non_heart_channels, axis=-1, keepdims=True)
+                pred_mask = tf.concat([non_hart_masks, heart_channels], axis=-1)
+                self.pred_mask = pred_mask
 
         return self
 
@@ -140,7 +152,6 @@ class SDNet(object):
         if not one_hot:
             assert output in ['linear', 'softmax']
             if output == 'linear':
-                print('Activation linear.')
                 return self.pred_mask
             else:
                 return tf.nn.softmax(self.pred_mask)
