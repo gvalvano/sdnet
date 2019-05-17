@@ -17,6 +17,10 @@ segmentations of the heart cavity, myocardium and right ventricle are provided.
 Database at: [*acdc_challenge*](https://www.creatis.insa-lyon.fr/Challenge/acdc/databases.html).\
 An atlas of the heart in each projection at: [*atlas*](http://tuttops.altervista.org/ecocardiografia_base.html).
 
+# Be aware that...
+
+This is a work in progress project. There could be errors and future updates.
+
 # How to use it
 
 1. Download the ACDC data set
