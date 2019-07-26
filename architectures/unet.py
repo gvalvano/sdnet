@@ -126,16 +126,18 @@ class UNet(object):
         """ Decoding brick: deconv (up-pool) --> conv --> conv.
         """
         with tf.variable_scope(scope):
-            conv1t = layers.conv2d_transpose(incoming, filters=nb_filters, kernel_size=2, strides=2, padding='same',
-                                             kernel_initializer=he_init, bias_initializer=b_init)
+            _, old_height, old_width, __ = incoming.get_shape()
+            new_height, new_width = 2.0 * old_height, 2.0 * old_width
+            upsampled = tf.image.resize_nearest_neighbor(incoming, size=[new_height, new_width])
+            conv1t = layers.conv2d(upsampled, filters=nb_filters, kernel_size=3, strides=1, padding='same',
+                                   kernel_initializer=he_init, bias_initializer=b_init)
             conv1t_bn = layers.batch_normalization(conv1t, training=is_training)
             conv1t_act = tf.nn.relu(conv1t_bn)
 
             concat = tf.concat([conv1t_act, concat_layer_in], axis=-1)
 
             conv2 = layers.conv2d(concat, filters=nb_filters, kernel_size=3, strides=1, padding='same',
-                                  kernel_initializer=he_init,
-                                  bias_initializer=b_init)
+                                  kernel_initializer=he_init, bias_initializer=b_init)
             conv2_bn = layers.batch_normalization(conv2, training=is_training)
             conv2_act = tf.nn.relu(conv2_bn)
 
