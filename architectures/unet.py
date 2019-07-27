@@ -13,13 +13,13 @@ class UNet(object):
         Class for UNet architecture. This is a 2D version (hence the vanilla UNet), which means it only employs
         bi-dimensional convolution and strides. This implementation also uses batch normalization after each conv layer.
         :param incoming: (tensor) incoming tensor
-        :param n_out: (int) number of channels for the network output. For instance, to predict a binary mask use
-                        n_out=2 (one-hot encoding); to predict a grayscale image use n_out=1
+        :param n_out: (int) number of channels for the network output. For instance, to predict a binary mask you must
+                        use n_out=2 (one-hot encoding); to predict a grayscale image you must use n_out=1
         :param is_training: (tf.placeholder(dtype=tf.bool) or bool) variable to define training or test mode; it is
                         needed for the behaviour of dropout, batch normalization, ecc. (which behave differently
                         at train and test time)
-        :param n_filters: (int) numebr of filters in the first layer. Default=64 (as in the vanilla unet)
-        :param name: (string) name scope for the unet
+        :param n_filters: (int) number of filters in the first layer. Default=64 (as in the vanilla UNet)
+        :param name: (string) name scope for the UNet
 
         - - - - - - - - - - - - - - - -
         Notice that:
