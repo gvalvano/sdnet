@@ -12,23 +12,24 @@ b_init = tf.zeros_initializer()
 
 class SDNet(object):
 
-    def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, use_segmentor=False, anatomy=None,
+    def __init__(self, n_anatomical_masks, nz_latent, n_classes, is_training, use_segmentor=True, anatomy=None,
                  name='Model'):
         """
-        SDNet architecture. For details, refer to:
+        Implementation of SDNet architecture. For details, refer to:
           "Factorised Representation Learning in Cardiac Image Analysis" (2019), arXiv preprint arXiv:1903.09467
           Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A.
 
         :param n_anatomical_masks: (int) number of anatomical masks (s factors)
-        :param nz_latent: (int) number of latent dimensions outputted by modality encoder
+        :param nz_latent: (int) number of latent dimensions as output of the modality encoder
         :param n_classes: (int) number of classes (4: background, LV, RV, MC)
         :param is_training: (tf.placeholder, or bool) training state, for batch normalization
-        :param use_segmentor: (bool) if True, use a separate network to obtain the final mask. Default behaviour (False)
-                        uses the first (n_classes - 1) anatomical masks as the segmentation channels.
+        :param use_segmentor: (bool) if True, use a separate network to obtain the final mask. If False, the model uses
+                        the first (n_classes - 1) anatomical masks as the segmentation channels. Defaults to True (as in
+                        the original paper).
         :param anatomy: (tensor) if given, the reconstruction is computed starting from z modality extracted by the
-                        input data and the hard anatomy in this argument. Default: compute and use hard anatomy of the
+                        input data and the hard anatomy given as argument. Default: compute and use hard anatomy of the
                         input data.
-        :param name: variable scope name
+        :param name: variable scope for the model
 
         - - - - - - - - - - - - - - - -
 
@@ -70,6 +71,7 @@ class SDNet(object):
         self.reconstruction = None
         self.z_regress = None
         self.pred_mask = None
+        self.input_segmentor = None
 
     def build(self, input_image, reuse=tf.AUTO_REUSE):
         """
@@ -78,53 +80,78 @@ class SDNet(object):
         with tf.variable_scope(self.name, reuse=reuse):
             # - - - - - - -
             # build Anatomy Encoder
-            with tf.variable_scope('AnatomyEncoder'):
-                unet = UNet(input_image, n_out=self.n_anatomical_masks, is_training=self.is_training, n_filters=64)
-                unet_encoder = unet.build_encoder()
-                unet_bottleneck = unet.build_bottleneck(unet_encoder)
-                unet_decoder = unet.build_decoder(unet_bottleneck)
-                coarse_output = unet.build_output(unet_decoder)
-
-                # apply softmax to scale the coarse_output channels in the range [0÷1]. This will avoid the same
-                # anatomy to be encoded twice from the model (one anatomy per channel).
-                self.soft_anatomy = tf.nn.softmax(coarse_output)
-
-            with tf.variable_scope('RoundingLayer'):
-                self.hard_anatomy = rounding_layer(self.soft_anatomy)
+            self.soft_anatomy, self.hard_anatomy, _ = self.build_anatomy_encoder(input_image)
 
             # - - - - - - -
             # build Modality Encoder
-            with tf.variable_scope('ModalityEncoder'):
-                anatomy = self.hard_anatomy if (self.anatomy is None) else self.anatomy
-                mod_encoder = ModalityEncoder(input_image, anatomy, self.nz_latent, self.is_training).build()
-                self.z_mean, self.z_logvar = mod_encoder.get_z_stats()
-                self.sampled_z = mod_encoder.get_z_sample()
+            self.z_mean, self.z_logvar, self.sampled_z, mod_encoder = self.build_modality_encoder(input_image, self.hard_anatomy)
 
             # - - - - - - -
             # build Decoder to reconstruct the input given sampled z and the hard anatomy
-            with tf.variable_scope('Decoder'):
-                decoder = Decoder(self.sampled_z, self.hard_anatomy, self.n_anatomical_masks, is_training=self.is_training).build()
-                self.reconstruction = decoder.get_reconstruction()
+            self.reconstruction, _ = self.build_decoder(self.sampled_z, self.hard_anatomy)
 
             # - - - - - - -
             # estimate back z_sample from the reconstructed image (only anatomy may be changed, no modality factors)
-            with tf.variable_scope('ModalityEncoder'):
-                self.z_regress = mod_encoder.estimate_z(self.reconstruction, reuse=True)
+            self.z_regress, _ = self.build_z_regressor(self.reconstruction, mod_encoder)
 
             # - - - - - - -
             # build Segmentor
             if self.use_segmentor:
-                with tf.variable_scope('Segmentor'):
-                    segmentor = Segmentor(self.hard_anatomy, self.n_classes, is_training=self.is_training).build()
-                    self.pred_mask = segmentor.get_output_mask()
+                self.input_segmentor = self.hard_anatomy
+                self.pred_mask = self.build_segmentor(self.input_segmentor, n_classes=self.n_classes)
             else:
-                heart_channels = self.soft_anatomy[..., :self.n_classes - 1]
                 non_heart_channels = self.soft_anatomy[..., self.n_classes - 1:]
-                non_hart_masks = tf.reduce_sum(non_heart_channels, axis=-1, keepdims=True)
-                pred_mask = tf.concat([non_hart_masks, heart_channels], axis=-1)
+                non_hart = tf.reduce_sum(non_heart_channels, axis=-1, keepdims=True)
+                heart = self.soft_anatomy[..., :self.n_classes - 1]
+
+                pred_mask = tf.concat([non_hart, heart], axis=-1)
                 self.pred_mask = pred_mask
 
         return self
+
+    def build_anatomy_encoder(self, input_image):
+        with tf.variable_scope('AnatomyEncoder'):
+            unet = UNet(input_image, n_out=self.n_anatomical_masks, is_training=self.is_training, n_filters=64)
+            unet_encoder = unet.build_encoder()
+            unet_bottleneck = unet.build_bottleneck(unet_encoder)
+            unet_decoder = unet.build_decoder(unet_bottleneck)
+            coarse_output = unet.build_output(unet_decoder)
+
+            # apply softmax to scale the coarse_output channels in the range [0÷1]. This will avoid the same anatomy to
+            # be encoded twice from the model (one anatomy per channel).
+            soft_anatomy = tf.nn.softmax(coarse_output)
+
+        with tf.variable_scope('RoundingLayer'):
+            hard_anatomy = rounding_layer(soft_anatomy)
+
+        return soft_anatomy, hard_anatomy, unet
+
+    def build_modality_encoder(self, input_image, hard_anatomy):
+        with tf.variable_scope('ModalityEncoder'):
+            mod_encoder = ModalityEncoder(input_image, hard_anatomy, self.nz_latent, self.is_training).build()
+            z_mean, z_logvar = mod_encoder.get_z_stats()
+            sampled_z = mod_encoder.get_z_sample()
+
+        return z_mean, z_logvar, sampled_z, mod_encoder
+
+    def build_decoder(self, sampled_z, hard_anatomy):
+        with tf.variable_scope('Decoder'):
+            decoder = Decoder(sampled_z, hard_anatomy, self.n_anatomical_masks, is_training=self.is_training).build()
+            reconstruction = decoder.get_reconstruction()
+
+        return reconstruction, decoder
+
+    @staticmethod
+    def build_z_regressor(reconstruction, mod_encoder):
+        with tf.variable_scope('ModalityEncoder'):
+            z_regress = mod_encoder.estimate_z(reconstruction, reuse=True)
+        return z_regress, mod_encoder
+
+    def build_segmentor(self, hard_anatomy, n_classes):
+        with tf.variable_scope('Segmentor'):
+            segmentor = Segmentor(hard_anatomy, n_classes=n_classes, is_training=self.is_training).build()
+            pred_mask = segmentor.get_output_mask()
+        return pred_mask
 
     def get_soft_anatomy(self):
         return self.soft_anatomy
@@ -141,10 +168,16 @@ class SDNet(object):
     def get_input_reconstruction(self):
         return self.reconstruction
 
+    def get_input_segmentor(self):
+        if not self.use_segmentor:
+            raise Exception("No Segmentor registered for this SDNet (see flag 'use_segmentor' in the class __init__()).")
+        return self.input_segmentor
+
     def get_pred_mask(self, one_hot, output=None):
         """
-        Notice that the output is not necessarily either one-hot encoded, nor in the range [0, 1]. Use one-hot flag to
-        obtain a segmentation mask
+        Get predicted mask.
+        Notice that the output is not necessarily one-hot encoded nor in the range [0, 1]. If you want a segmentation
+        mask you should use the one-hot flag.
         :param one_hot: (bool) if True, returns one-hot segmentation mask
         :param output: (str) optional, if one-hot is False then output must be either 'linear' or 'softmax'
         :return:
