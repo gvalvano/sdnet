@@ -19,9 +19,10 @@ import errno
 class Model(DatasetInterfaceWrapper):
     def __init__(self, run_id=None):
         """
-        Class used to extend the SDNet framework leveraging temporal information.
+        General model. It defines the network architecture and the functions for train, test, etc.
+
         :param run_id: (str) used when we want to load a specific pre-trained model. Default run_id is taken from
-                config_file
+                config_file.py
         """
 
         FLAGS = config_file.define_flags()
@@ -98,6 +99,9 @@ class Model(DatasetInterfaceWrapper):
                          num_threads=self.num_threads)
 
     def get_data(self):
+        """ Define the dataset iterators for each task (supervised and unsupervised)
+        They will be used in define_model().
+        """
 
         self.sup_train_init, self.sup_valid_init, self.sup_input_data, self.sup_output_data = \
             super(Model, self).get_acdc_sup_data(data_path=self.acdc_data_path, repeat=True)
@@ -106,6 +110,16 @@ class Model(DatasetInterfaceWrapper):
             super(Model, self).get_acdc_unsup_data(data_path=self.acdc_data_path, repeat=False)
 
     def define_model(self):
+        """ Define the network architecture.
+        Notice that, since we want to share the weights across different tasks we must define one SDNet for every task
+        with reuse=True. Then, we have:
+          - sdnet_sup: model for the supervised task. Here we want to predict the correct segmentation mask given the
+                        ground truth labels. It is also used for the adversarial discriminator. Here we want to predict
+                        segmentation masks that appear realistic to an adversarial discriminator that is trained to
+                        distinguish real segmentations from the generated ones.
+          - sdnet_unsup: model for the unsupervised task of decomposing the image in anatomical and modality dependent
+                        factors (s and z, respectively). The model is trained to reconstruct the input image using them.
+        """
 
         # - - - - - - -
         # define the model for supervised, unsupervised and temporal frame prediction data:
@@ -142,7 +156,7 @@ class Model(DatasetInterfaceWrapper):
 
     def define_losses(self):
         """
-        Define loss function.
+        Define loss function for each task.
         """
         # _______
         # Reconstruction loss:
