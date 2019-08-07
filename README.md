@@ -8,6 +8,9 @@ For details refer to the paper:
 > Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A. (2019). 
 > *Factorised Representation Learning in Cardiac Image Analysis*. arXiv preprint arXiv:1903.09467.
 
+An implementation using Keras can be found at: https://github.com/agis85/anatomy_modality_decomposition
+
+
 ----------------------------------
 **Data:**
 
