@@ -1,4 +1,4 @@
-# SDNet
+# Spatial Decomposition Network (SDNet)
 
 **Tensorflow implementation of SDNet**
 
