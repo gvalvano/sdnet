@@ -85,7 +85,7 @@ class Model(DatasetInterfaceWrapper):
         self.callbacks.append(RoutineCallback())  # routine callback always runs
         # Early stopping callback:
         self.callbacks_kwargs['es_loss'] = None
-        self.callbacks.append(EarlyStoppingCallback(min_delta=0.01, patience=100))
+        self.callbacks.append(EarlyStoppingCallback(min_delta=1e-5, patience=2000))
 
         # -----------------------------
         # Other settings
@@ -112,16 +112,31 @@ class Model(DatasetInterfaceWrapper):
                          input_size=self.input_size,
                          num_threads=self.num_threads)
 
+    def build(self):
+        """ Build the computation graph """
+        print('Building the computation graph...\nRUN_ID = \033[94m{0}\033[0m'.format(self.run_id))
+        self.get_data()
+        self.define_model()
+        self.define_losses()
+        self.define_optimizers()
+        self.define_eval_metrics()
+        self.define_summaries()
+
     def get_data(self):
         """ Define the dataset iterators for each task (supervised and unsupervised)
         They will be used in define_model().
         """
 
+        self.global_seed = tf.placeholder(tf.int64, shape=())
+
+        # Repeat indefinitely all the iterators, exception made for the one iterating over the biggest dataset. This
+        # ensures that every data is used during training.
+
         self.sup_train_init, self.sup_valid_init, self.sup_input_data, self.sup_output_data = \
-            super(Model, self).get_acdc_sup_data(data_path=self.acdc_data_path, repeat=True)
+            super(Model, self).get_acdc_sup_data(data_path=self.acdc_data_path, repeat=True, seed=self.global_seed)
 
         self.unsup_train_init, self.unsup_valid_init, self.unsup_input_data, self.unsup_output_data = \
-            super(Model, self).get_acdc_unsup_data(data_path=self.acdc_data_path, repeat=False)
+            super(Model, self).get_acdc_unsup_data(data_path=self.acdc_data_path, repeat=False, seed=self.global_seed)
 
     def define_model(self):
         """ Define the network architecture.
@@ -238,16 +253,15 @@ class Model(DatasetInterfaceWrapper):
         using Adam Gradient Descent to minimize cost
         """
 
-        def _train_op_wrapper(loss_function, lr, clip_grads=False, clip_value=5.0):
+        def _train_op_wrapper(loss_function, optimizer, clip_grads=False, clip_value=5.0, var_list=None):
             """ define optimizer and train op with gradient clipping. """
-            # define optimizer:
-            optimizer = tf.train.AdamOptimizer(lr)
+
             # define update_ops to update batch normalization population statistics
             update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
 
             with tf.control_dependencies(update_ops):
                 # gradient clipping for stability:
-                gradients, variables = zip(*optimizer.compute_gradients(loss_function))
+                gradients, variables = zip(*optimizer.compute_gradients(loss_function, var_list))
                 if clip_grads:
                     gradients, _ = tf.clip_by_global_norm(gradients, clip_value)
                 # train op:
@@ -256,9 +270,11 @@ class Model(DatasetInterfaceWrapper):
             return train_op
 
         clip = True
-        self.train_op_sup = _train_op_wrapper(self.sup_loss, self.lr, clip)
-        self.train_op_unsup = _train_op_wrapper(self.unsup_loss, self.lr, clip)
-        self.train_op_disc = _train_op_wrapper(self.adv_disc_loss, self.lr, clip)
+        optimizer = tf.train.AdamOptimizer(self.lr)
+
+        self.train_op_sup = _train_op_wrapper(self.sup_loss, optimizer, clip)
+        self.train_op_unsup = _train_op_wrapper(self.unsup_loss, optimizer, clip)
+        self.train_op_disc = _train_op_wrapper(self.adv_disc_loss, optimizer, clip)
 
     def define_eval_metrics(self):
         """
@@ -357,16 +373,6 @@ class Model(DatasetInterfaceWrapper):
             weights_summary = [tf.summary.histogram(v, tf.get_default_graph().get_tensor_by_name(v)) for v in _vars]
             self.weights_summary = tf.summary.merge(weights_summary)
 
-    def build(self):
-        """ Build the computation graph """
-        print('Building the computation graph...\nRUN_ID = \033[94m{0}\033[0m'.format(self.run_id))
-        self.get_data()
-        self.define_model()
-        self.define_losses()
-        self.define_optimizers()
-        self.define_eval_metrics()
-        self.define_summaries()
-
     def _train_sup_step(self, sess, writer, step):
         """ train the model with a supervised step. """
         _, l, scalar_summaries = sess.run([self.train_op_sup, self.sup_loss, self.sup_train_scalar_summary_op],
@@ -404,13 +410,11 @@ class Model(DatasetInterfaceWrapper):
             while True:
                 caller.on_batch_begin(training_state=True, **self.callbacks_kwargs)
 
-                if bool(getrandbits(1)):
-                    total_sup_loss += self._train_sup_step(sess, writer, step)
-                    step += 1
+                total_sup_loss += self._train_sup_step(sess, writer, step)
+                step += 1
 
-                if bool(getrandbits(1)):
-                    total_unsup_loss += self._train_disc_step(sess, writer, step)
-                    step += 1
+                total_unsup_loss += self._train_disc_step(sess, writer, step)
+                step += 1
 
                 # This is the only tensorflow dataset with repeat=False, so it finishes and launch an exception:
                 total_unsup_loss += self._train_unsup_step(sess, writer, step)
