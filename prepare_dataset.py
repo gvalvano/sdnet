@@ -33,6 +33,7 @@ import cv2
 import tensorflow as tf
 from sklearn.utils import shuffle
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # data set dirs:
@@ -48,13 +49,15 @@ for subdir in ['train', 'validation', 'test']:
 # the mean width and height and the mean spatial resolutions for the ACDC data set are (rounded to the closest int):
 mean_width = 227.03  # values computed after resizing the data set to the same resolution
 mean_height = 254.88  # values computed after resizing the data set to the same resolution
-mean_dx = 1.5117105
-mean_dy = 1.5117105
+
+# resolution, according to SDNet paper:
+mean_dx = 1.37  # 1.5117105
+mean_dy = 1.37  # 1.5117105
 
 # unet input dimensions must be fully divisible for 16, so find the multiple of 16 which is closest to mean width
 # and variance and the data:
-img_width = int(np.round(mean_width / 16) * 16)
-img_height = int(np.round(mean_height / 16) * 16)
+img_width = 224  # int(np.round(mean_width / 16) * 16)
+img_height = 224  # int(np.round(mean_height / 16) * 16)
 img_dx = mean_dx
 img_dy = mean_dy
 
@@ -139,6 +142,8 @@ def crop_or_pad_slice_center(batch, new_size, value):
         batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='mean')
     elif value == 'min':
         batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='minimum')
+    elif value == 'edge':
+        batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='edge')
     else:
         c_value = value
         batch = np.pad(batch, (pad_0, pad_1, pad_2), mode='constant', constant_values=c_value)
@@ -167,8 +172,8 @@ def standardize_and_clip(batch):
     """
     m = np.percentile(batch, 50)
     s = np.percentile(batch, 75) - np.percentile(batch, 25)
-    lower_limit = np.percentile(batch, 10)
-    upper_limit = np.percentile(batch, 90)
+    lower_limit = np.percentile(batch, 5)
+    upper_limit = np.percentile(batch, 95)
 
     batch = np.clip(batch, a_min=lower_limit, a_max=upper_limit)
     batch = (batch - m) / (s + 1e-12)
@@ -254,72 +259,14 @@ def slice_pre_processing_pipeline(filename):
 
     # 8. crop to maximum size
     size = (img_width, img_height)
-    img_array = crop_or_pad_slice_center(img_array, new_size=size, value='min')
+    img_array = crop_or_pad_slice_center(img_array, new_size=size, value='edge')
 
     # 8b. undersample and make 64x64
     img_array = resize_2d_slices(img_array, new_size=final_shape, interpolation=cv2.INTER_CUBIC)
-    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape, value='min')
+    img_array = crop_or_pad_slice_center(img_array, new_size=final_shape, value='edge')
 
     # 9. standardize and clip values out of +- 3 standard deviations
     img_array = standardize_and_clip(img_array)
-
-    return img_array
-
-
-def tframe_pre_processing_pipeline(filename):
-    """ Pre-processing pipeline.
-     With respect to mask_pre_processing_pipeline():
-            point 7 uses bi-cubic interpolation and point 9 is performed
-    """
-    # 1. load nifti file
-    img = nib.load(filename)
-
-    # 2. get image resolution on the slice axis x and y
-    header = img.header
-    try:
-        dx, dy, dz, dt = header.get_zooms()
-    except:
-        dx, dy, dz = header.get_zooms()
-
-    # 3. evaluate scaling factors to get to that resolution
-    scale_x = dx / img_dx
-    scale_y = dy / img_dy
-
-    # 4. evaluate output shape after rescaling
-    shape = img.shape
-    x_max_scaled = int(scale_x * shape[0])
-    y_max_scaled = int(scale_y * shape[1])
-
-    # 5. get array
-    img_array = img.get_data()
-
-    # 6. put all the slices on the first axis, times on the last one
-    img_array = np.transpose(img_array, (2, 0, 1, 3))
-    _img_array = []
-
-    for t in range(img_array.shape[-1]):
-        img = img_array[..., t]
-
-        # 7. interpolate to obtain output shapes computed at 4.
-        size = (x_max_scaled, y_max_scaled)
-        img = resize_2d_slices(img, new_size=size, interpolation=cv2.INTER_CUBIC)
-
-        # 8. crop or pad to maximum size
-        size = (img_width, img_height)
-        img = crop_or_pad_slice_center(img, new_size=size, value='min')
-
-        # 8b. undersample and make final_shape
-        img = resize_2d_slices(img, new_size=final_shape, interpolation=cv2.INTER_CUBIC)
-        img = crop_or_pad_slice_center(img, new_size=final_shape, value='min')
-
-        # 9. standardize and clip values out of +- 3 standard deviations
-        img = standardize_and_clip(img)
-
-        _img_array.append(img)
-    img_array = np.array(_img_array)
-
-    # put time on last index again
-    img_array = np.transpose(img_array, (1, 2, 3, 0))
 
     return img_array
 
@@ -373,10 +320,13 @@ def mask_pre_processing_pipeline(filename):
 
 
 def build_unsup_sets():
+
     for set in ['train', 'validation', 'test']:
         print('  | Processing {0} data...'.format(set))
 
         root_dir = source_dir + set
+        if set == 'train':
+            root_dir += '_unsup'
 
         suffix = '*/' if root_dir.endswith('/') else '/*/'
         subdir_list = [d[:-1] for d in glob(root_dir + suffix)]
@@ -414,6 +364,8 @@ def build_sup_sets():
         print('  | Processing {0} data...'.format(set))
 
         root_dir = source_dir + set
+        if set == 'train':
+            root_dir += '_sup'
 
         suffix = '*/' if root_dir.endswith('/') else '/*/'
         subdir_list = [d[:-1] for d in glob(root_dir + suffix)]
@@ -466,45 +418,12 @@ def build_sup_sets():
         np.save(os.path.join(dest_dir, '{0}/sup_mask_{0}.npy'.format(set)), stack_mask_array)
 
 
-def build_tframe_sets():
-    # output array: [slice, rows, cols, 1, time]
-
-    for set in ['train', 'validation', 'test']:
-        print('  | Processing {0} data...'.format(set))
-
-        root_dir = source_dir + set
-
-        suffix = '*/' if root_dir.endswith('/') else '/*/'
-        subdir_list = [d[:-1] for d in glob(root_dir + suffix)]
-
-        stack = []
-        for subdir in subdir_list:
-            folder_name = subdir.rsplit('/')[-1]
-            if folder_name.startswith('patient'):
-                prefix = os.path.join(root_dir, folder_name)
-                pt_number = folder_name.split('patient')[1]
-                pt_full_path = os.path.join(prefix, 'patient' + pt_number + '_4d.nii.gz')
-
-                # Pre-process image and add to the stack
-                img_array = tframe_pre_processing_pipeline(pt_full_path)
-
-                # remove empty slices:
-                img_array = remove_empty_slices(img_array)
-
-                img_array = np.expand_dims(img_array, axis=-2)
-
-                np.save(os.path.join(prefix, 'patient' + pt_number + '_4d_preproc_tframe.npy'), img_array)
-                stack.extend(img_array)
-
 
 def main():
     print('\nBuilding SUPERVISED sets.')
     build_sup_sets()
     print('\nBuilding UNSUPERVISED sets.')
-    build_unsup_sets()
-    print('\nBuilding T-FRAME sets.')
-    build_tframe_sets()
-    print('\nEnd.')
+    print('\nDone.')
 
 
 if __name__ == '__main__':
