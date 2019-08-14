@@ -90,9 +90,9 @@ class DatasetInterface(object):
     def _data_augmentation_ops(x_train):
         """ Data augmentation pipeline (to be applied on training samples)
         """
-        # image distortions:
-        x_train = tf.image.random_brightness(x_train, max_delta=0.025)
-        x_train = tf.image.random_contrast(x_train, lower=0.95, upper=1.05)
+        # # image distortions:
+        # x_train = tf.image.random_brightness(x_train, max_delta=0.025)
+        # x_train = tf.image.random_contrast(x_train, lower=0.95, upper=1.05)
 
         return tf.cast(x_train, tf.float32)
 
@@ -104,7 +104,6 @@ class DatasetInterface(object):
         :param augment: (bool) if True, perform data augmentation operations
         :return: (array) = numpy array with the frames on the first dimension, s.t.: [None, width, height]
         """
-
         batch = np.load(filename.decode('utf-8')).astype(np.float32)
 
         if standardize:
@@ -117,7 +116,7 @@ class DatasetInterface(object):
 
         return batch
 
-    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4):
+    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4, seed=None):
         """ Returns iterators on the dataset along with their initializers.
         :param b_size: batch size
         :param augment: if to perform data augmentation
@@ -130,17 +129,19 @@ class DatasetInterface(object):
 
             _train_data = tf.constant(self.x_train_paths)
             _valid_data = tf.constant(self.x_validation_paths)
-
             train_data = tf.data.Dataset.from_tensor_slices(_train_data)
+            valid_data = tf.data.Dataset.from_tensor_slices(_valid_data)
+
+            train_data = train_data.shuffle(buffer_size=len(self.x_train_paths), seed=seed)
+
             train_data = train_data.map(
-                lambda filename: tf.py_function(  # Parse the record into tensors
+                lambda filename: tf.py_func(  # Parse the record into tensors
                     self.data_parser,
                     [filename, standardize, augment],
                     [tf.float32]), num_parallel_calls=num_threads)
 
-            valid_data = tf.data.Dataset.from_tensor_slices(_valid_data)
             valid_data = valid_data.map(
-                lambda filename: tf.py_function(  # Parse the record into tensors
+                lambda filename: tf.py_func(  # Parse the record into tensors
                     self.data_parser,
                     [filename, standardize, False],
                     [tf.float32]), num_parallel_calls=num_threads)
@@ -151,7 +152,8 @@ class DatasetInterface(object):
                 train_data = train_data.map(self._data_augmentation_ops, num_parallel_calls=num_threads)
                 valid_data = valid_data.map(lambda v: tf.cast(v, dtype=tf.float32), num_parallel_calls=num_threads)
 
-            train_data = train_data.shuffle(buffer_size=len(self.x_train_paths))
+            seed2 = seed + 1
+            train_data = train_data.shuffle(buffer_size=len(self.x_train_paths), seed=seed2)
 
             if repeat:
                 print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
@@ -164,11 +166,10 @@ class DatasetInterface(object):
             train_data = train_data.batch(b_size, drop_remainder=True)
             valid_data = valid_data.batch(b_size, drop_remainder=True)
 
-            if len(get_available_gpus()) > 0:
-                if tf.__version__ < '1.7.0':
-                    train_data = train_data.prefetch(buffer_size=2)  # buffer_size depends on the machine
-                else:
-                    train_data = train_data.apply(tf.contrib.data.prefetch_to_device("/gpu:0"))
+            # if len(get_available_gpus()) > 0:
+            #     # prefetch data to the GPU
+            #     # train_data = train_data.apply(tf.data.experimental.prefetch_to_device("/gpu:0"))
+            #     train_data = train_data.apply(tf.data.experimental.copy_to_device("/gpu:0")).prefetch(1)
 
             iterator = tf.data.Iterator.from_structure(train_data.output_types, train_data.output_shapes)
 
@@ -178,7 +179,6 @@ class DatasetInterface(object):
 
             with tf.name_scope('input_unsup'):
                 input_data = tf.reshape(_input_data, shape=[-1, self.input_size[0], self.input_size[1], 1])
-                input_data += tf.random.normal(mean=0.0, stddev=0.02, shape=tf.shape(input_data))
 
             with tf.name_scope('output_unsup'):
                 output_data = tf.reshape(_input_data, shape=[-1, self.input_size[0], self.input_size[1], 1])

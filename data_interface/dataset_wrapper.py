@@ -37,33 +37,37 @@ class DatasetInterfaceWrapper(object):
         self.input_size = input_size
         self.num_threads = num_threads
 
-    def get_acdc_sup_data(self, data_path, repeat=False):
+    def get_acdc_sup_data(self, data_path, repeat=False, seed=None):
         """
         wrapper to ACDC data set. Gets input images and annotated masks.
         :param data_path: (str) path to data directory
         :param repeat: (bool) whether to repeat the input indefinitely
-        :return: iterator initializer for train and valid data; input and output frame; time and delta time.
+        :param seed: (int or placeholder) seed for the random operations
+        :return: iterator initializer for train valid, and test data; input and output frame; time and delta time.
         """
         print('Define input pipeline for supervised data...')
 
         # initialize data set interfaces
         acdc_itf = ACDCSupInterface(data_path, self.input_size)
 
-        train_init, valid_init, input_data, output_data = acdc_itf.get_data(
+        train_init, valid_init, test_init, input_data, output_data = acdc_itf.get_data(
             b_size=self.batch_size,
             augment=self.augment,
             standardize=self.standardize,
             repeat=repeat,
-            num_threads=self.num_threads)
+            num_threads=self.num_threads,
+            seed=seed
+        )
 
-        return train_init, valid_init, input_data, output_data
+        return train_init, valid_init, test_init, input_data, output_data
 
-    def get_acdc_unsup_data(self, data_path, repeat=False):
+    def get_acdc_unsup_data(self, data_path, repeat=False, seed=None):
         """
         wrapper to ACDC data set. Gets input images without ground truth mask. Notice that output_data is just an alias
         for input_data
         :param data_path: (str) path to data directory
         :param repeat: (bool) whether to repeat the input indefinitely
+        :param seed: (int or placeholder) seed for the random operations
         :return: iterator initializer for train and valid data; input and output frame; time and delta time.
         """
         print('Define input pipeline for unsupervised data...')
@@ -76,7 +80,8 @@ class DatasetInterfaceWrapper(object):
             augment=self.augment,
             standardize=self.standardize,
             repeat=repeat,
-            num_threads=self.num_threads
+            num_threads=self.num_threads,
+            seed=seed
         )
 
         return train_init, valid_init, input_data, output_data

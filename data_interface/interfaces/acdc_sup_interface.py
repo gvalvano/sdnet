@@ -70,13 +70,14 @@ class DatasetInterface(object):
 
         return x_train, y_train
 
-    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4):
+    def get_data(self, b_size, augment=False, standardize=False, repeat=False, num_threads=4, seed=None):
         """ Returns iterators on the dataset along with their initializers.
         :param b_size: batch size
         :param augment: if to perform data augmentation
         :param standardize: if to standardize the input data
         :param repeat: (bool) whether to repeat the input indefinitely
         :param num_threads: for parallel computing
+        :param seed: (int or placeholder) seed for the random operations
         :return: train_init, valid_init, input_data, label
         """
         with tf.name_scope('acdc_data'):
@@ -95,7 +96,7 @@ class DatasetInterface(object):
             if augment:
                 train_data = train_data.map(self._data_augmentation_ops, num_parallel_calls=num_threads)
 
-            train_data = train_data.shuffle(buffer_size=len(self.x_train))
+            train_data = train_data.shuffle(buffer_size=len(self.x_train), seed=seed)
 
             if repeat:
                 print_yellow_text(' --> Repeat the input indefinitely  = True', sep=False)
@@ -104,11 +105,10 @@ class DatasetInterface(object):
             train_data = train_data.batch(b_size, drop_remainder=True)
             valid_data = valid_data.batch(b_size, drop_remainder=True)
 
-            if len(get_available_gpus()) > 0:
-                if tf.__version__ < '1.7.0':
-                    train_data = train_data.prefetch(buffer_size=2)  # buffer_size depends on the machine
-                else:
-                    train_data = train_data.apply(tf.contrib.data.prefetch_to_device("/gpu:0"))
+            # if len(get_available_gpus()) > 0:
+            #     # prefetch data to the GPU
+            #     # train_data = train_data.apply(tf.data.experimental.prefetch_to_device("/gpu:0"))
+            #     train_data = train_data.apply(tf.data.experimental.copy_to_device("/gpu:0")).prefetch(1)
 
             iterator = tf.data.Iterator.from_structure(train_data.output_types, train_data.output_shapes)
 
