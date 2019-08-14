@@ -27,11 +27,11 @@ class MaskDiscriminator(object):
         """
         Class for building the mask discriminator
         :param is_training: (tf.placeholder(dtype=tf.bool) or bool) variable to define training or test mode; it is
-                        needed for the behaviour of dropout (which behaves differently at train and test time)
+                        needed for the behaviour of dropout (which is different at train or test time)
         :param n_filters: (int) number of filters at the first convolutional layer
         :param n_blocks: (int) number of down-sample blocks
         :param out_mode: (str) output mode: valid entries are ['scalar', 'prob_map']. Defaults to 'scalar'.
-                        scalar --> output a scalar value as in vanilla GAN
+                        scalar --> outputs a scalar value as in vanilla GANs
                         prob_map --> outputs a probability map of values (each value is a scalar associated to its given
                             receptive field)
         :param name: (str) name for the variable scope
@@ -87,7 +87,8 @@ class MaskDiscriminator(object):
 
             if self.out_mode == 'prob_map':
                 # output a 2D probability map:
-                self.output = spectral_norm_conv2d(layer, filters=1, kernel_size=4, stride=1, padding='valid', scope='sn_conv_out')
+                self.output = spectral_norm_conv2d(layer, filters=1, kernel_size=4, stride=1, padding='valid',
+                                                   scope='sn_conv_out')
             elif self.out_mode == 'scalar':
                 # output a scalar value:
                 layer = tf.layers.flatten(layer)
@@ -107,7 +108,7 @@ class MaskDiscriminator(object):
         :param n_filters: number of filters for the convolutional layer
         :param stride: (int) stride to be used for the convolution. Typical value is stride > 1 (i.e. = 2).
         :param scope: variable scope
-        :return: leaky_relu(spectral norm convolutional layer)
+        :return: leaky_relu activation of the spectral norm convolutional layer
         """
         with tf.variable_scope(scope):
             n_norm = spectral_norm_conv2d(incoming, filters=n_filters, kernel_size=4, stride=stride, padding='same')

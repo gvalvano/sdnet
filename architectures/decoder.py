@@ -73,16 +73,18 @@ class Decoder(object):
     def get_reconstruction(self):
         return self.reconstruction
 
-    def _film_layer(self, spatial_input, resd_input, scope='_film_layer'):
+    def _film_layer(self, spatial_input, z_factor, scope='_film_layer'):
         with tf.variable_scope(scope):
 
-            conv1 = layers.conv2d(spatial_input, filters=self.n_channels, kernel_size=3, strides=1, padding='same')
+            n_filters = 16  # self.n_channels  # ( == 8 )
+
+            conv1 = layers.conv2d(spatial_input, filters=n_filters, kernel_size=3, strides=1, padding='same')
             conv1_act = tf.nn.leaky_relu(conv1)
 
-            conv2 = layers.conv2d(conv1_act, filters=self.n_channels, kernel_size=3, strides=1, padding='same')
+            conv2 = layers.conv2d(conv1_act, filters=n_filters, kernel_size=3, strides=1, padding='same')
             conv2_act = tf.nn.leaky_relu(conv2)
 
-            gamma_l2, beta_l2 = self._film_pred(resd_input, 2 * self.n_channels)
+            gamma_l2, beta_l2 = self._film_pred(z_factor, n_units=2 * n_filters)
 
             film = film_layer(conv2_act, gamma_l2, beta_l2)
             film_act = tf.nn.leaky_relu(film)
@@ -92,15 +94,15 @@ class Decoder(object):
         return film_sum
 
     @staticmethod
-    def _film_pred(incoming, num_chn):
+    def _film_pred(incoming, n_units):
         with tf.variable_scope('_film_pred'):
 
-            fc = layers.dense(incoming, units=num_chn)
+            fc = layers.dense(incoming, units=n_units)
             fc_act = tf.nn.leaky_relu(fc)
-            film_pred = layers.dense(fc_act, units=num_chn)
+            film_pred = layers.dense(fc_act, units=n_units)
 
-            gamma = film_pred[:, :int(num_chn / 2)]
-            beta = film_pred[:, int(num_chn / 2):]
+            gamma = film_pred[:, :int(n_units / 2)]
+            beta = film_pred[:, int(n_units / 2):]
 
         return gamma, beta
 

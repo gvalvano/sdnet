@@ -24,14 +24,13 @@ class Segmentor(object):
 
     def __init__(self, input_data, n_classes, is_training, name='Segmentor'):
         """
-        Class for the Segmentor architecture. It receives the hard-anatomy thresholded images as input, outputs the
-        segmentation masks.
+        Class for the Segmentor architecture. It receives the hard-anatomies as input and outputs the segmentation masks
         :param input_data: (tensor) incoming tensor with input = encoded_anatomy
         :param n_classes: (int) number of classes for the network output.
         :param is_training: (tf.placeholder(dtype=tf.bool) or bool) variable to define training or test mode; it is
                         needed for the behaviour of dropout, batch normalization, ecc. (which behave differently
                         at train and test time)
-        :param name: (string) name scope for the unet
+        :param name: (string) variable scope for the segmentor
 
         - - - - - - - - - - - - - - - -
         Notice that:
@@ -46,7 +45,6 @@ class Segmentor(object):
             soft_output = tf.nn.softmax(output)
 
             loss = weighted_cross_entropy(soft_output, y_true)
-
 
         """
         # check for compatible input dimensions
@@ -74,6 +72,7 @@ class Segmentor(object):
 
             self.output_mask = layers.conv2d(conv2_act, filters=self.n_classes, kernel_size=1, strides=1,
                                              padding='same', kernel_initializer=he_init, bias_initializer=b_init)
+
         return self
 
     def get_output_mask(self):

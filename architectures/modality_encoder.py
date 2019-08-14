@@ -30,13 +30,13 @@ class ModalityEncoder(object):
         :param n_latent: (int) number of latent variables for the network output.
         :param is_training: (tf.placeholder(dtype=tf.bool) or bool) variable to define training or test mode; it is
                         needed for the behaviour of dropout, batch normalization, ecc. (which behave differently
-                        at train and test time)
-        :param name: (string) name scope for the unet
+                        at train or test time)
+        :param name: (string) variable scope for the encoder
 
         - - - - - - - - - - - - - - - -
         Notice that:
           - the network outputs the parameters of a gaussian distribution (mean and log(variance)) together with a
-            data sampled from such distribution.
+            data point sampled from such distribution.
         - - - - - - - - - - - - - - - -
 
         Example of usage:
@@ -71,9 +71,11 @@ class ModalityEncoder(object):
 
     def build(self, reuse=tf.AUTO_REUSE):
         """
-        Build the model.
+        Build the model and define:
+          - estimate of mean and variance of predicted gaussian distribution
+          - sample from the distribution
         :param reuse: (bool) if True, reuse weights.
-        :return: estimate of mean and variance of estimated gaussian distribution, sample from the distribution
+        :return: self
         """
         with tf.variable_scope(self.name, reuse=reuse):
             incoming = tf.concat([self.input_data, self.encoded_anatomy], axis=-1)
