@@ -16,6 +16,7 @@ Wrapper to the dataset interfaces
 #  limitations under the License.
 
 from data_interface.interfaces.acdc_sup_interface import DatasetInterface as ACDCSupInterface
+from data_interface.interfaces.acdc_disc_interface import DatasetInterface as ACDCDiscInterface
 from data_interface.interfaces.acdc_unsup_interface import DatasetInterface as ACDCUnsupInterface
 
 
@@ -60,6 +61,30 @@ class DatasetInterfaceWrapper(object):
         )
 
         return train_init, valid_init, test_init, input_data, output_data
+
+    def get_acdc_disc_data(self, data_path, repeat=False, seed=None):
+        """
+        wrapper to ACDC data set. Gets input images and annotated masks.
+        :param data_path: (str) path to data directory
+        :param repeat: (bool) whether to repeat the input indefinitely
+        :param seed: (int or placeholder) seed for the random operations
+        :return: iterator initializer for train valid, and test data; input and output frame; time and delta time.
+        """
+        print('Define input pipeline for adversarial discriminator data...')
+
+        # initialize data set interfaces
+        acdc_itf = ACDCDiscInterface(data_path, self.input_size)
+
+        train_init, valid_init, input_data, output_data = acdc_itf.get_data(
+            b_size=self.batch_size,
+            augment=self.augment,
+            standardize=self.standardize,
+            repeat=repeat,
+            num_threads=self.num_threads,
+            seed=seed
+        )
+
+        return train_init, valid_init, input_data, output_data
 
     def get_acdc_unsup_data(self, data_path, repeat=False, seed=None):
         """
