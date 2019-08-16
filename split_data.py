@@ -21,7 +21,6 @@ from glob import glob
 from idas.utils import print_yellow_text
 
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - -
-PERCENTAGE_PORTION = -1  # <---- change this to obtain a different split of the data set
 root = './data/acdc_data/'
 #  - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -64,7 +63,7 @@ if __name__ == '__main__':
     print_yellow_text('\nSplitting the data in: train, validation, test ...', sep=False)
 
     # create split
-    splits_ids = get_splits()[PERCENTAGE_PORTION]
+    splits_ids = get_splits()[0]
     subdir_list = [d for d in glob(root + default_data_folder + '/*')]
 
     dset_list = ['train_sup', 'train_disc', 'train_unsup', 'validation', 'test']
