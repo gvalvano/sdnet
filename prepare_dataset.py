@@ -27,7 +27,7 @@ run time.
 import numpy as np
 import nibabel as nib
 from glob import glob
-from idas.utils import safe_mkdir
+from idas.utils import safe_mkdir, print_yellow_text
 import os
 import cv2
 import tensorflow as tf
@@ -38,8 +38,10 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # data set dirs:
 
-source_dir = './data/acdc_data/'  # + '_tmp/'
-dest_dir = './data/acdc_data/preprocessed/'  # + '_tmp/'
+source_dir = './data/acdc_data/'
+dest_dir = './data/acdc_data/preprocessed/'
+
+safe_mkdir(dest_dir)
 
 for subdir in ['train', 'validation', 'test']:
     safe_mkdir(os.path.join(dest_dir, subdir))
@@ -418,12 +420,75 @@ def build_sup_sets():
         np.save(os.path.join(dest_dir, '{0}/sup_mask_{0}.npy'.format(set)), stack_mask_array)
 
 
+def build_disc_sets():
+
+    for set in ['train', 'validation', 'test']:
+        print('  | Processing {0} data...'.format(set))
+
+        root_dir = source_dir + set
+        if set == 'train':
+            root_dir += '_disc'
+
+        suffix = '*/' if root_dir.endswith('/') else '/*/'
+        subdir_list = [d[:-1] for d in glob(root_dir + suffix)]
+
+        stack = []
+        stack_masks = []
+        for subdir in subdir_list:
+            folder_name = subdir.rsplit('/')[-1]
+            if folder_name.startswith('patient'):
+                prefix = os.path.join(root_dir, folder_name)
+                pt_number = folder_name.split('patient')[1]
+
+                ed, es, _, _, _, _ = parse_info_cfg(prefix + '/Info.cfg')
+                pt_ed_full_path = os.path.join(prefix, 'patient' + pt_number + '_frame{0}.nii.gz'.format(str(ed).zfill(2)))
+                pt_es_full_path = os.path.join(prefix, 'patient' + pt_number + '_frame{0}.nii.gz'.format(str(es).zfill(2)))
+                pt_ed_mask_full_path = os.path.join(prefix, 'patient' + pt_number + '_frame{0}_gt.nii.gz'.format(str(ed).zfill(2)))
+                pt_es_mask_full_path = os.path.join(prefix, 'patient' + pt_number + '_frame{0}_gt.nii.gz'.format(str(es).zfill(2)))
+
+                # Pre-process image and add to the stack
+                img_array = slice_pre_processing_pipeline(pt_ed_full_path)
+                img_array = np.expand_dims(img_array, -1)
+                stack.extend(img_array)
+                mask = mask_pre_processing_pipeline(pt_ed_mask_full_path)
+                stack_masks.extend(mask)
+
+                np.save(os.path.join(prefix, 'patient' + pt_number + '_frame{0}_preproc.npy'.format(str(ed).zfill(2))), img_array)
+                np.save(os.path.join(prefix, 'patient' + pt_number + '_frame{0}_gt_preproc.npy'.format(str(ed).zfill(2))), mask)
+
+                # Pre-process image and add to the stack
+                img_array = slice_pre_processing_pipeline(pt_es_full_path)
+                img_array = np.expand_dims(img_array, -1)
+                stack.extend(img_array)
+                mask = mask_pre_processing_pipeline(pt_es_mask_full_path)
+                stack_masks.extend(mask)
+
+                np.save(os.path.join(prefix, 'patient' + pt_number + '_frame{0}_preproc.npy'.format(str(es).zfill(2))), img_array)
+                np.save(os.path.join(prefix, 'patient' + pt_number + '_frame{0}_gt_preproc.npy'.format(str(es).zfill(2))), mask)
+
+        # define array
+        stack_array = np.array(stack)
+        stack_mask_array = np.array(stack_masks)
+
+        # remove empty slices:
+        stack_array, stack_mask_array = remove_empty_slices(stack_array, stack_mask_array)
+
+        # shuffle training set and save
+        stack_array, stack_mask_array = shuffle(stack_array, stack_mask_array)
+
+        np.save(os.path.join(dest_dir, '{0}/disc_{0}.npy'.format(set)), stack_array)
+        np.save(os.path.join(dest_dir, '{0}/disc_mask_{0}.npy'.format(set)), stack_mask_array)
+
 
 def main():
     print('\nBuilding SUPERVISED sets.')
     build_sup_sets()
     print('\nBuilding UNSUPERVISED sets.')
-    print('\nDone.')
+    build_unsup_sets()
+    print('\nBuilding DISCRIMINATOR sets.')
+    build_disc_sets()
+
+    print_yellow_text('\nDone.\n', sep=False)
 
 
 if __name__ == '__main__':
