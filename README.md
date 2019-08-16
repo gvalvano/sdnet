@@ -74,6 +74,12 @@ Remember that, due to architectural constraints of the SDNet [see *Chartsias et 
 
 # Results:
 
+Example of anatomical factors extracted by the SDNet from the image on the left:
+
+<img src="https://github.com/gabriele_valvano/sdnet/raw/master/results/images/example.png" alt="example" width="600"/>
+
+The last two images are: the reconstruction and the predicted segmentation mask, respectively. 
+
 ---------------------
 
 For problems, bugs, etc. feel free to contact me at the following email address:
