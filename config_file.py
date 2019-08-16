@@ -15,6 +15,8 @@
 import tensorflow as tf
 
 RUN_ID = 'SDNet'
+CUDA_VISIBLE_DEVICE = 0
+
 data_path = './data/acdc_data'
 
 
@@ -29,23 +31,28 @@ def define_flags():
     tf.flags.DEFINE_float('lr', 1e-4, 'learning rate')
 
     # batch size
-    tf.flags.DEFINE_integer('b_size', 4, "batch size")
+    tf.flags.DEFINE_integer('b_size', 7, "batch size")
 
     tf.flags.DEFINE_integer('n_anatomical_masks', 8, "number of extracted anatomical masks")
+    tf.flags.DEFINE_integer('n_frame_composing_masks', 8, "number composing masks for next frame mask prediction")
     tf.flags.DEFINE_integer('nz_latent', 8, "number latent variable for z code (encoder modality)")
+    tf.flags.DEFINE_integer('CUDA_VISIBLE_DEVICE', CUDA_VISIBLE_DEVICE, "visible gpu")
 
     # ____________________________________________________ #
     # =============== TRAINING STRATEGY ================== #
 
     tf.flags.DEFINE_bool('augment', True, "Perform data augmentation")
     tf.flags.DEFINE_bool('standardize', False, "Perform data standardization (z-score)")  # data already pre-processed
+    # (others, such as learning rate decay params...)
 
     # ____________________________________________________ #
     # =============== INTERNAL VARIABLES ================= #
 
     # internal variables:
     tf.flags.DEFINE_integer('num_threads', 20, "number of threads for loading data")
-    tf.flags.DEFINE_integer('skip_step', 4000, "frequency of batch report prints")
+    tf.flags.DEFINE_integer('skip_step', 4000, "frequency of printing batch report")
+    tf.flags.DEFINE_integer('train_summaries_skip', 10, "number of skips before writing summaries for training steps "
+                                                        "(used to reduce its verbosity; put 1 to avoid this)")
     tf.flags.DEFINE_bool('tensorboard_verbose', True, "if True: save also layers weights every N epochs")
 
     # ____________________________________________________ #
