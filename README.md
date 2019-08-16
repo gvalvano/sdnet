@@ -68,7 +68,6 @@ ckp_dir = project_root + 'results/checkpoints/' + RUN_ID
 model = Model()
 model.define_model()
 soft_anat, hard_anat, masks, reconstr = model.test(input_data=x, checkpoint_dir=ckp_dir)
-future_x, future_hard_anat, masks = model.test_future_frames(input_data=x, checkpoint_dir=ckp_dir)
 ```
 
 Remember that, due to architectural constraints of the SDNet [see *Chartsias et al. (2019)*], the batch size that you used during training remains fixed at test time. 
