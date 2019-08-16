@@ -313,6 +313,8 @@ class Model(DatasetInterfaceWrapper):
         disc_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "MaskDiscriminator")
         self.train_op_adv_disc = _train_op_wrapper(self.discriminator_loss, optimizer, clip, var_list=disc_vars)
 
+        self.global_train_op = tf.group(self.train_op_sup, self.train_op_unsup, self.train_op_adv_disc)
+
     def define_eval_metrics(self):
         """
         Evaluate the model on the current batch
@@ -358,10 +360,10 @@ class Model(DatasetInterfaceWrapper):
 
         N = self.n_anatomical_masks
         with tf.name_scope('4_SoftAnatomy'):
-            img_s_an_lst = [tf.summary.image('soft_{0}'.format(i), get_slice(self.soft_anatomy, i), max_outputs=1)
+            img_s_an_lst = [tf.summary.image('soft_{0}'.format(i), get_slice(self.sup_soft_anatomy, i), max_outputs=1)
                             for i in range(N)]
         with tf.name_scope('5_HardAnatomy'):
-            img_h_an_lst = [tf.summary.image('hard_{0}'.format(i), get_slice(self.hard_anatomy, i), max_outputs=1)
+            img_h_an_lst = [tf.summary.image('hard_{0}'.format(i), get_slice(self.sup_hard_anatomy, i), max_outputs=1)
                             for i in range(N)]
 
         with tf.name_scope('10_TEST_RESULTS'):
@@ -404,8 +406,7 @@ class Model(DatasetInterfaceWrapper):
         _, sl, usl, dl, scalar_summaries = sess.run([self.global_train_op,
                                                      self.sup_loss,
                                                      self.unsup_loss,
-                                                     self.adv_disc_loss,
-                                                     self.all_train_scalar_summary_op],
+                                                     self.adv_disc_loss],
                                                     feed_dict={self.is_training: True})
 
         if random.randint(0, self.train_summaries_skip) == 0:
