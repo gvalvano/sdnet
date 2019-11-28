@@ -33,6 +33,10 @@ class SDNet(object):
           "Factorised Representation Learning in Cardiac Image Analysis" (2019), arXiv preprint arXiv:1903.09467
           Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A.
 
+        Notice that this implementation does not contain the mask discriminator. The mask discriminator architecture is
+        in idas.models._internal._sdnet. You can easily add it following the example at:
+            https://github.com/gvalvano/sdnet/blob/b56339534ccbe95261eb2b1642e80aa52d644201/model.py#L199
+
         :param n_anatomical_masks: (int) number of anatomical masks (s factors)
         :param nz_latent: (int) number of latent dimensions as output of the modality encoder
         :param n_classes: (int) number of classes (4: background, LV, RV, MC)
