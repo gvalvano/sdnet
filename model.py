@@ -182,6 +182,7 @@ class Model(DatasetInterfaceWrapper):
         # sup pathway
         self.sup_pred_mask = sdnet_sup.get_pred_mask(one_hot=False, output='linear')
         self.sup_pred_mask_oh = sdnet_sup.get_pred_mask(one_hot=True)
+        self.disc_pred_mask = sdnet_disc.get_pred_mask(one_hot=False, output='softmax')
         self.disc_pred_mask_oh = sdnet_disc.get_pred_mask(one_hot=True)
         self.disc_hard_anatomy = sdnet_disc.get_hard_anatomy()
         self.sup_soft_anatomy = sdnet_sup.get_soft_anatomy()
@@ -199,7 +200,7 @@ class Model(DatasetInterfaceWrapper):
             model_real = MaskDiscriminator(self.is_training, n_filters=64, out_mode='scalar')
             model_real = model_real.build(self.disc_output_data[..., 1:], reuse=False)
 
-            pred_heart_mask = self.disc_pred_mask_oh[..., 1:]
+            pred_heart_mask = self.disc_pred_mask[..., 1:]
             model_fake = MaskDiscriminator(self.is_training, n_filters=64, out_mode='scalar')
             model_fake = model_fake.build(pred_heart_mask, reuse=True)
 
