@@ -34,7 +34,7 @@ class SDNet(object):
           Chartsias, A., Joyce, T., Papanastasiou, G., Williams, M., Newby, D., Dharmakumar, R., & Tsaftaris, S. A.
 
         Notice that this implementation does not contain the mask discriminator. The mask discriminator architecture is
-        in idas.models._internal._sdnet. You can easily add it following the example at:
+        in mask_discriminator.py and you can easily add it following the example at:
             https://github.com/gvalvano/sdnet/blob/b56339534ccbe95261eb2b1642e80aa52d644201/model.py#L199
 
         :param n_anatomical_masks: (int) number of anatomical masks (s factors)
