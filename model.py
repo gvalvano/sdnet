@@ -378,11 +378,13 @@ class Model(DatasetInterfaceWrapper):
         sup_valid_scalar_summaries = [val_dice_loss_3chs]
         unsup_train_scalar_summaries = [tr_rec, tr_kl]
         unsup_valid_scalar_summaries = [val_rec, val_zrec]
+        all_train_scalar_summaries = [tr_dice_loss_3chs, tr_rec, tr_kl]
 
         self.sup_train_scalar_summary_op = tf.summary.merge(sup_train_scalar_summaries)
         self.sup_valid_scalar_summary_op = tf.summary.merge(sup_valid_scalar_summaries)
         self.unsup_train_scalar_summary_op = tf.summary.merge(unsup_train_scalar_summaries)
         self.unsup_valid_scalar_summary_op = tf.summary.merge(unsup_valid_scalar_summaries)
+        self.all_train_scalar_summary_op = tf.summary.merge(all_train_scalar_summaries)
 
         # _______________________________
         # merging all images summaries:
@@ -407,7 +409,8 @@ class Model(DatasetInterfaceWrapper):
         _, sl, usl, dl, scalar_summaries = sess.run([self.global_train_op,
                                                      self.sup_loss,
                                                      self.unsup_loss,
-                                                     self.adv_disc_loss],
+                                                     self.adv_disc_loss,
+                                                     self.all_train_scalar_summary_op],
                                                     feed_dict={self.is_training: True})
 
         if random.randint(0, self.train_summaries_skip) == 0:
